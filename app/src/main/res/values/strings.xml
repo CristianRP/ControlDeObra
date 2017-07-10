@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Control de Obra</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!-- Strings of login -->
+    <string name="lema_depsa">&quot;Creemos que El Hogar es la base Fundamental para construir una sociedad.&quot;</string>
+    <string name="tv_username">Nombre de usuario:</string>
+    <string name="tv_password">Clave:</string>
+    <string name="btn_entrar">Entrar</string>
+
+</resources>
