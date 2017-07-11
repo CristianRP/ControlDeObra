@@ -9,5 +9,6 @@
     <string name="tv_username">Nombre de usuario:</string>
     <string name="tv_password">Clave:</string>
     <string name="btn_entrar">Entrar</string>
+    <string name="title_activity_menu">MenuActivity</string>
 
 </resources>
