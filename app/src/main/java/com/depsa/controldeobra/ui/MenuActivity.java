@@ -1,31 +1,59 @@
 package com.depsa.controldeobra.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.depsa.controldeobra.R;
+import com.depsa.controldeobra.adapter.MenuAdapter;
+import com.depsa.controldeobra.bean.MenuItem;
 
-public class MenuActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MenuActivity extends AppCompatActivity
+        implements MenuAdapter.OnItemClickListener {
+
+    public static ArrayList<MenuItem> ITEMS =
+            new ArrayList<MenuItem>() {{
+                add(new MenuItem("ENTREGA DE MATERIALES", R.drawable.entrega_materiales));
+                add(new MenuItem("DEVOLUCION DE MATERIAL", R.drawable.devolucion_material));
+                add(new MenuItem("RECEPCION DE TAREAS", R.drawable.recepcion_tareas));
+                add(new MenuItem("AVANCE DE OBRA", R.drawable.avance_obra));
+                add(new MenuItem("SOBREGIROS", R.drawable.sobre_giros));
+            }};
+    @BindView(R.id.recyclerViewMenu)
+    RecyclerView mRecyclerViewMenu;
+    @BindView(R.id.imgLogo)
+    ImageView mImgLogo;
+
+    private LinearLayoutManager mLayoutManager;
+    private MenuAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mRecyclerViewMenu.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerViewMenu.setLayoutManager(mLayoutManager);
+
+        mAdapter = new MenuAdapter(ITEMS, this);
+        mAdapter.setHasStableIds(true);
+        mAdapter.setOnItemClickListener(this);
+        mRecyclerViewMenu.setAdapter(mAdapter);
+
     }
 
+    @Override
+    public void onItemClick(MenuAdapter.ViewHolder item, int position) {
+
+    }
 }
