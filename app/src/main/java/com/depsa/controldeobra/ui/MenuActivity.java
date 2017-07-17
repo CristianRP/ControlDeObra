@@ -1,5 +1,6 @@
 package com.depsa.controldeobra.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,6 +55,19 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(MenuAdapter.ViewHolder item, int position) {
-
+        MenuItem menuItem = ITEMS.get(position);
+        switch (menuItem.getDescripcion()) {
+            case "ENTREGA DE MATERIALES":
+                startActivity(new Intent(MenuActivity.this, EntregaMaterialesActivity.class));
+                break;
+            case "DEVOLUCION DE MATERIAL":
+                break;
+            case "RECEPCION DE TAREAS":
+                break;
+            case "AVANCE DE OBRA":
+                break;
+            case "SOBREGIROS":
+                break;
+        }
     }
 }
