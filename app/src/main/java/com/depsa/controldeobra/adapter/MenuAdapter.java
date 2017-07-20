@@ -32,6 +32,8 @@ public class MenuAdapter
 
     public interface OnItemClickListener {
         void onItemClick(ViewHolder item, int position);
+        void btnManualOnClick(View v, int position);
+        void btnScanOnClick(View v, int position);
     }
 
     private OnItemClickListener listener;
@@ -87,16 +89,29 @@ public class MenuAdapter
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         MenuItem items = mListaMenuItems.get(position);
         Picasso.with(mContext)
                 .load(items.getResourceId())
                 .into(holder.mLogoItem);
         holder.mTitle.setText(items.getDescripcion());
+        holder.mBtnManual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.btnManualOnClick(v, position);
+            }
+        });
+        holder.mBtnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.btnScanOnClick(v, position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mListaMenuItems.size();
     }
+
 }

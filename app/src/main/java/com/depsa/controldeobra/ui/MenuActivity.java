@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.adapter.MenuAdapter;
@@ -69,5 +71,15 @@ public class MenuActivity extends AppCompatActivity
             case "SOBREGIROS":
                 break;
         }
+    }
+
+    @Override
+    public void btnManualOnClick(View v, int position) {
+        Toast.makeText(this, "MANUAL :'v", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void btnScanOnClick(View v, int position) {
+        Toast.makeText(this, "SCAN :'v", Toast.LENGTH_SHORT).show();
     }
 }
