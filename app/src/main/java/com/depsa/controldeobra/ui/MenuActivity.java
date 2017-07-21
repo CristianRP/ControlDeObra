@@ -80,6 +80,6 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void btnScanOnClick(View v, int position) {
-        Toast.makeText(this, "SCAN :'v", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
     }
 }
