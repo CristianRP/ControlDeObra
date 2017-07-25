@@ -4,107 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <android.support.constraint.ConstraintLayout
+    <EditText
+        android:id="@+id/txtDescripcion"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="1dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/colorBlack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline6" />
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8"
-            tools:layout_editor_absoluteX="307dp"
-            tools:layout_editor_absoluteY="25dp" />
+    <EditText
+        android:id="@+id/txtCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:ems="10"
+        android:inputType="numberSigned" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.6"
-            tools:layout_editor_absoluteX="231dp"
-            tools:layout_editor_absoluteY="25dp" />
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintRight_toLeftOf="@+id/view"
-            android:layout_marginRight="8dp" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="1dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="0dp"
-            android:background="@color/colorBlack"
-            app:layout_constraintRight_toLeftOf="@+id/guideline7"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="0dp" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="3"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline7"
-            app:layout_constraintRight_toLeftOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/button_justification_circle"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/view2"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.527" />
-    </android.support.constraint.ConstraintLayout>
-
+    <EditText
+        android:id="@+id/txtUnidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:ems="10"
+        android:inputType="numberSigned" />
 </LinearLayout>

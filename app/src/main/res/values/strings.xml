@@ -24,7 +24,7 @@
     <string name="dialog_title_entrega">Entrega de equipos?</string>
     <string name="btn_entrega">Entregar</string>
     <string name="btn_siguiente">Siguiente</string>
-    <string name="escaner_load_text">Obteniendo datos ...</string>
+    <string name="escaner_load_text">Obteniendo datos &#8230;</string>
     <string name="btn_justificacion">Justificación</string>
 
 </resources>
