@@ -44,7 +44,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical|center_horizontal|center"
                 android:padding="10dp"
-                android:src="@mipmap/ic_launcher" />
+                 />
         </RelativeLayout>
 
         <TextView

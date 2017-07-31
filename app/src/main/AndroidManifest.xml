@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_control_obra"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_control_obra"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -33,9 +33,9 @@
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.EntregaMaterialesActivity" />
-        <activity android:name=".ui.EntregaMaterialesTableActivity" />
+        <activity android:screenOrientation="landscape" android:name=".ui.EntregaMaterialesTableActivity" />
         <activity android:name=".ui.EscanearActivity" />
-        <activity android:name=".ui.BodyResponseActivity"></activity>
+        <activity android:name=".ui.BodyResponseActivity" />
     </application>
 
 </manifest>

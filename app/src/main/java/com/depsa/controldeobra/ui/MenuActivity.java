@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.adapter.MenuAdapter;
@@ -21,13 +20,19 @@ import butterknife.ButterKnife;
 public class MenuActivity extends AppCompatActivity
         implements MenuAdapter.OnItemClickListener {
 
+    public static String ENTREGA_MATERIALES_TXT = "ENTREGA DE MATERIALES";
+    public static String DEVOLUCION_MATERIAL_TXT = "DEVOLUCION DE MATERIAL";
+    public static String RECEPCION_TAREAS_TXT = "RECEPCION DE TAREAS";
+    public static String AVANCE_DE_OBRA = "AVANCE DE OBRA";
+    public static String SOBREGIROS = "SOBREGIROS";
+
     public static ArrayList<MenuItem> ITEMS =
             new ArrayList<MenuItem>() {{
-                add(new MenuItem("ENTREGA DE MATERIALES", R.drawable.entrega_materiales));
-                add(new MenuItem("DEVOLUCION DE MATERIAL", R.drawable.devolucion_material));
-                add(new MenuItem("RECEPCION DE TAREAS", R.drawable.recepcion_tareas));
-                add(new MenuItem("AVANCE DE OBRA", R.drawable.avance_obra));
-                add(new MenuItem("SOBREGIROS", R.drawable.sobre_giros));
+                add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
+                add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
+                add(new MenuItem(RECEPCION_TAREAS_TXT, R.drawable.recepcion_tareas));
+                add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
+                add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
             }};
     @BindView(R.id.recyclerViewMenu)
     RecyclerView mRecyclerViewMenu;
@@ -57,25 +62,25 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(MenuAdapter.ViewHolder item, int position) {
-        MenuItem menuItem = ITEMS.get(position);
-        switch (menuItem.getDescripcion()) {
-            case "ENTREGA DE MATERIALES":
-                startActivity(new Intent(MenuActivity.this, EntregaMaterialesActivity.class));
-                break;
-            case "DEVOLUCION DE MATERIAL":
-                break;
-            case "RECEPCION DE TAREAS":
-                break;
-            case "AVANCE DE OBRA":
-                break;
-            case "SOBREGIROS":
-                break;
-        }
+
     }
 
     @Override
     public void btnManualOnClick(View v, int position) {
-        Toast.makeText(this, "MANUAL :'v", Toast.LENGTH_SHORT).show();
+        MenuItem menuItem = ITEMS.get(position);
+        if (menuItem.getDescripcion().equals(ENTREGA_MATERIALES_TXT)) {
+            Intent entrega = new Intent(MenuActivity.this, EntregaMaterialesActivity.class);
+            entrega.putExtra("titulo", ENTREGA_MATERIALES_TXT);
+            startActivity(entrega);
+        } else if (menuItem.getDescripcion().equals(DEVOLUCION_MATERIAL_TXT)) {
+
+        } else if (menuItem.getDescripcion().equals(RECEPCION_TAREAS_TXT)) {
+
+        } else if (menuItem.getDescripcion().equals(AVANCE_DE_OBRA)) {
+
+        } else if (menuItem.getDescripcion().equals(SOBREGIROS)) {
+
+        }
     }
 
     @Override

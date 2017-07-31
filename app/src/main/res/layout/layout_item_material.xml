@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/background_cell"
     android:orientation="horizontal">
 
-    <EditText
+    <TextView
         android:id="@+id/txtDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
         android:text="Name" />
 
     <View
@@ -22,6 +22,34 @@
 
     <EditText
         android:id="@+id/txtCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.9"
+        android:enabled="false"
+        android:ems="10" />
+
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/txtBodega"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="numberSigned" />
+
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/txtDespacho"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.9"
@@ -39,5 +67,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.9"
         android:ems="10"
+        android:enabled="false"
         android:inputType="numberSigned" />
+
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

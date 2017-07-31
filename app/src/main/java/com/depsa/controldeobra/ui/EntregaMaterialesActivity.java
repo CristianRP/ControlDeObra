@@ -1,17 +1,27 @@
 package com.depsa.controldeobra.ui;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.depsa.controldeobra.R;
 
 import butterknife.BindColor;
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.depsa.controldeobra.ui.MenuActivity.AVANCE_DE_OBRA;
+import static com.depsa.controldeobra.ui.MenuActivity.DEVOLUCION_MATERIAL_TXT;
+import static com.depsa.controldeobra.ui.MenuActivity.ENTREGA_MATERIALES_TXT;
+import static com.depsa.controldeobra.ui.MenuActivity.RECEPCION_TAREAS_TXT;
+import static com.depsa.controldeobra.ui.MenuActivity.SOBREGIROS;
 
 public class EntregaMaterialesActivity extends AppCompatActivity {
 
@@ -29,6 +39,20 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
     Button mBtnTarea;
     @BindColor(R.color.colorGreen)
     int colorGreen;
+    @BindView(R.id.imgLogoItem)
+    ImageView imgLogoItem;
+    @BindView(R.id.txtTitle)
+    TextView txtTitle;
+    @BindDrawable(R.drawable.entrega_materiales)
+    Drawable imgEntregaMateriales;
+    @BindDrawable(R.drawable.devolucion_material)
+    Drawable imgDevolucionMaterial;
+    @BindDrawable(R.drawable.recepcion_tareas)
+    Drawable imgRepecionTarea;
+    @BindDrawable(R.drawable.avance_obra)
+    Drawable imgAvanceObra;
+    @BindDrawable(R.drawable.sobre_giros)
+    Drawable sobregiros;
 
     private static final int GET_PROYECTOS = 1;
     private static final int GET_MODELOS = 2;
@@ -47,6 +71,20 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_entrega_materiales);
         ButterKnife.bind(this);
         mButtonSiguiente.setEnabled(false);
+
+        Intent menu = getIntent();
+        txtTitle.setText(menu.getStringExtra("titulo"));
+        if (menu.getStringExtra("titulo").equals(ENTREGA_MATERIALES_TXT)) {
+            imgLogoItem.setBackground(imgEntregaMateriales);
+        } else if (menu.getStringExtra("titulo").equals(DEVOLUCION_MATERIAL_TXT)) {
+            imgLogoItem.setBackground(imgDevolucionMaterial);
+        } else if (menu.getStringExtra("titulo").equals(RECEPCION_TAREAS_TXT)) {
+            imgLogoItem.setBackground(imgRepecionTarea);
+        } else if (menu.getStringExtra("titulo").equals(AVANCE_DE_OBRA)) {
+            imgLogoItem.setBackground(imgAvanceObra);
+        } else if (menu.getStringExtra("titulo").equals(SOBREGIROS)) {
+            imgLogoItem.setBackground(sobregiros);
+        }
 
     }
 
@@ -103,8 +141,8 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
         entrega.putExtra("parametro2", codActividad);
         entrega.putExtra("parametro3", codTarea);
         startActivity(entrega);
-        Log.e("VALUES:", " " + codProyecto + " " + codModelo + " " + codObra + " " + codActividad  +
-        " " + codTarea);
+        Log.e("VALUES:", " " + codProyecto + " " + codModelo + " " + codObra + " " + codActividad +
+                " " + codTarea);
     }
 
     /**

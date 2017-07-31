@@ -53,7 +53,7 @@ public class BodyResponseDetalleAdapter
             implements View.OnClickListener {
 
         @BindView(R.id.txtDescripcion)
-        EditText txtDescripcion;
+        TextView txtDescripcion;
         @BindView(R.id.txtCantidad)
         EditText txtCantidad;
         @BindView(R.id.txtUnidad)
@@ -92,8 +92,8 @@ public class BodyResponseDetalleAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         BodyResponse item = mListaBodyResponse.get(position);
-        holder.txtDescripcion.setText(item.getNombre(), TextView.BufferType.EDITABLE);
-        holder.txtCantidad.setText(item.getCantidad(), TextView.BufferType.EDITABLE);
+        holder.txtDescripcion.setText(item.getNombre());
+        holder.txtCantidad.setText(String.valueOf(item.getCantidad()), TextView.BufferType.EDITABLE);
         holder.txtUnidad.setText(item.getEsUnidad(), TextView.BufferType.EDITABLE);
     }
 
