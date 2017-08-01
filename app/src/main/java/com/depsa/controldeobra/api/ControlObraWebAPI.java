@@ -46,6 +46,10 @@ public interface ControlObraWebAPI {
                                         @Query("parametro") int parametro,
                                         @Query("parametro1") int parametro1,
                                         @Query("parametro2") int parametro2,
-                                        @Query("parametro3") int parametro3);
+                                        @Query("parametro3") int parametro3,
+                                        @Query("parametro3") int parametro4,
+                                        @Query("parametro3") int parametro5,
+                                        @Query("parametro3") int parametro6,
+                                        @Query("parametro3") int parametro7);
 
 }
