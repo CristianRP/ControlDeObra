@@ -140,6 +140,7 @@ public class BodyResponseActivity extends AppCompatActivity
                     }
                 }
                 Log.e(BodyResponseActivity.class.getSimpleName(), "Successfull!");
+                Log.e(BodyResponseActivity.class.getSimpleName(), "test  -ws " + response.body().get(0).getIncluir());
                 mListaResponse = response.body();
                 setDataToRecycler(response.body());
             }

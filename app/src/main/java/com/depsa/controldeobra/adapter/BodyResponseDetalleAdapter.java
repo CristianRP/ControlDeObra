@@ -2,10 +2,14 @@ package com.depsa.controldeobra.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -96,20 +100,51 @@ public class BodyResponseDetalleAdapter
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        BodyResponse item = mListaBodyResponse.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final BodyResponse item = mListaBodyResponse.get(position);
         holder.txtDescripcion.setText(item.getNombre());
         holder.txtCantidad.setText(String.valueOf(item.getCantidad()), TextView.BufferType.EDITABLE);
-        holder.txtUnidad.setText(item.getEsUnidad(), TextView.BufferType.EDITABLE);
-        if (holder.checkBoxSelect.isSelected()) {
-            item.setIncluir("YES");
-        } else {
-            item.setIncluir("FALSE");
-        }
+        holder.txtUnidad.setText(String.valueOf(item.getEsUnidad()), TextView.BufferType.EDITABLE);
+        holder.txtBodega.setText(String.valueOf(item.getBodega()), TextView.BufferType.EDITABLE);
+        //holder.txtDespacho.setText(String.valueOf(item.getDespacho()), TextView.BufferType.EDITABLE)\
+        item.setIncluir("FALSE");
+        holder.checkBoxSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    item.setIncluir("YES");
+                } else {
+                    item.setIncluir("FALSE");
+                }
+            }
+        });
+        holder.txtDespacho.setTag(position);
+        holder.txtDespacho.setText(String.valueOf(item.getDespacho()), TextView.BufferType.EDITABLE);
+        Log.e("test", " " + holder.txtDespacho.getTag());
+        holder.txtDespacho.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    item.setDespacho(Integer.parseInt(s.toString()));
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mListaBodyResponse.size();
     }
+
 }

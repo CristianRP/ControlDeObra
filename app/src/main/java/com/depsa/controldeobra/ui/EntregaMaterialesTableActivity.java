@@ -61,6 +61,8 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
                 entregaMateriales.getIntExtra("parametro1", 0),
                 entregaMateriales.getIntExtra("parametro2", 0),
                 entregaMateriales.getIntExtra("parametro3", 0));
+
+        Constants.showDialog(this, "Cargando datos...");
     }
 
     private void setDataToRecycler(List<BodyResponse> items) {
@@ -71,7 +73,7 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
 
     private void getMateriales(Integer... parameters) {
         Call<List<BodyResponse>> getMaterialesWS = mControlObraWebAPI.getDetalle(parameters[0], parameters[1],
-                parameters[2], parameters[3], parameters[4], parameters[5]);
+                parameters[2], parameters[3], parameters[4]);
         getMaterialesWS.enqueue(new Callback<List<BodyResponse>>() {
             @Override
             public void onResponse(Call<List<BodyResponse>> call, Response<List<BodyResponse>> response) {
@@ -138,13 +140,16 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
                     }
                 }
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Successfull!");
-
+                Toast.makeText(EntregaMaterialesTableActivity.this, "Datos enviados correctamente!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(EntregaMaterialesTableActivity.this, MenuActivity.class));
+                finish();
             }
 
             @Override
             public void onFailure(Call<Requisicion> call, Throwable t) {
                 Constants.dismissDialog();
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
+                Toast.makeText(EntregaMaterialesTableActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,7 +162,31 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
                 .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //sendReqToServer();
+                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
+                        Intent entregaMateriales = getIntent();
+                        for (BodyResponse response : mListaResponse) {
+                            Requisicion req = new Requisicion(
+                                    entregaMateriales.getIntExtra("parametro", 0),
+                                    entregaMateriales.getIntExtra("parametro2", 0),
+                                    0,
+                                    entregaMateriales.getIntExtra("parametro2", 0),
+                                    entregaMateriales.getIntExtra("parametro3", 0),
+                                    Integer.parseInt(response.getCodigo()),
+                                    Double.parseDouble(String.valueOf(response.getDespacho())),
+                                    response.getCodUnidad(),
+                                    response.getEsUnidad(),
+                                    Double.parseDouble(String.valueOf(response.getSolicitado())),
+                                    Double.parseDouble(String.valueOf(response.getDespacho())),
+                                    Double.parseDouble(String.valueOf(response.getBodega())),
+                                    response.getIncluir(),
+                                    0,
+                                    1,
+                                    "Dispositivo",
+                                    response.getTipo(),
+                                    "ACTIVO"
+                            );
+                            sendReqToServer(req);
+                        }
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

@@ -44,8 +44,8 @@ public class BodyResponse {
     private String incluir;
 
     public BodyResponse(String codigo, String nombre, Integer cantidad, String tipo,
-                        Integer codUnidad, String esUnidad, int solicitado, int despacho,
-                        int bodega, String incluir) {
+                        Integer codUnidad, String esUnidad, int solicitado,
+                        int despacho, int bodega, String incluir) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.cantidad = cantidad;

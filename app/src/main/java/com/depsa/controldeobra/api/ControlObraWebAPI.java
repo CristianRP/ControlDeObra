@@ -49,8 +49,7 @@ public interface ControlObraWebAPI {
                                         @Query("parametro") int parametro,
                                         @Query("parametro1") int parametro1,
                                         @Query("parametro2") int parametro2,
-                                        @Query("parametro3") int parametro3,
-                                        @Query("parametro3") int parametro4);
+                                        @Query("parametro3") int parametro3);
 
     @POST("api/Requisicion")
     Call<Requisicion> postRequisicion(@Body Requisicion requisicion);
