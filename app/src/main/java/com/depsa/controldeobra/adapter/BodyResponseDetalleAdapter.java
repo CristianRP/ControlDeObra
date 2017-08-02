@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,7 +26,6 @@ import butterknife.ButterKnife;
 
 public class BodyResponseDetalleAdapter
         extends RecyclerView.Adapter<BodyResponseDetalleAdapter.ViewHolder> {
-
 
     private Context mContext;
     private List<BodyResponse> mListaBodyResponse;
@@ -58,6 +58,12 @@ public class BodyResponseDetalleAdapter
         EditText txtCantidad;
         @BindView(R.id.txtUnidad)
         EditText txtUnidad;
+        @BindView(R.id.txtBodega)
+        EditText txtBodega;
+        @BindView(R.id.txtDespacho)
+        EditText txtDespacho;
+        @BindView(R.id.checkBoxSelect)
+        CheckBox checkBoxSelect;
 
         private BodyResponseDetalleAdapter parent = null;
 
@@ -95,6 +101,11 @@ public class BodyResponseDetalleAdapter
         holder.txtDescripcion.setText(item.getNombre());
         holder.txtCantidad.setText(String.valueOf(item.getCantidad()), TextView.BufferType.EDITABLE);
         holder.txtUnidad.setText(item.getEsUnidad(), TextView.BufferType.EDITABLE);
+        if (holder.checkBoxSelect.isSelected()) {
+            item.setIncluir("YES");
+        } else {
+            item.setIncluir("FALSE");
+        }
     }
 
     @Override

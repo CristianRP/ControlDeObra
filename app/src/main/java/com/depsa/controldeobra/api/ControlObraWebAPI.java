@@ -1,11 +1,14 @@
 package com.depsa.controldeobra.api;
 
 import com.depsa.controldeobra.bean.BodyResponse;
+import com.depsa.controldeobra.bean.Requisicion;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -47,9 +50,8 @@ public interface ControlObraWebAPI {
                                         @Query("parametro1") int parametro1,
                                         @Query("parametro2") int parametro2,
                                         @Query("parametro3") int parametro3,
-                                        @Query("parametro3") int parametro4,
-                                        @Query("parametro3") int parametro5,
-                                        @Query("parametro3") int parametro6,
-                                        @Query("parametro3") int parametro7);
+                                        @Query("parametro3") int parametro4);
 
+    @POST("api/Requisicion")
+    Call<Requisicion> postRequisicion(@Body Requisicion requisicion);
 }

@@ -1,7 +1,9 @@
 package com.depsa.controldeobra.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import com.depsa.controldeobra.adapter.BodyResponseDetalleAdapter;
 import com.depsa.controldeobra.api.ControlObraWebAPI;
 import com.depsa.controldeobra.api.ServiceGenerator;
 import com.depsa.controldeobra.bean.BodyResponse;
+import com.depsa.controldeobra.bean.Requisicion;
 import com.depsa.controldeobra.util.Constants;
 
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,7 +71,7 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
 
     private void getMateriales(Integer... parameters) {
         Call<List<BodyResponse>> getMaterialesWS = mControlObraWebAPI.getDetalle(parameters[0], parameters[1],
-                parameters[2], parameters[3], parameters[4]);
+                parameters[2], parameters[3], parameters[4], parameters[5]);
         getMaterialesWS.enqueue(new Callback<List<BodyResponse>>() {
             @Override
             public void onResponse(Call<List<BodyResponse>> call, Response<List<BodyResponse>> response) {
@@ -104,5 +108,65 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
             }
         });
+    }
+
+    private void sendReqToServer(Requisicion requisicion) {
+        Call<Requisicion>  postReqToServer = mControlObraWebAPI.postRequisicion(requisicion);
+        postReqToServer.enqueue(new Callback<Requisicion>() {
+            @Override
+            public void onResponse(Call<Requisicion> call, Response<Requisicion> response) {
+                Constants.dismissDialog();
+                String error = "Ha ocurrido un error. Contacte con el administrador";
+                if (!response.isSuccessful()) {
+                    if (response.raw().code() != 200) {
+                        Toast.makeText(EntregaMaterialesTableActivity.this, error, Toast.LENGTH_SHORT).show();
+                        Log.e(LoginActivity.class.getSimpleName(), error);
+                        return;
+                    }
+                    if (response.errorBody()
+                            .contentType()
+                            .subtype()
+                            .equals("json")) {
+                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Error " + response.errorBody().toString());
+                    } else {
+                        try {
+                            // Errores no relacionados con el API
+                            Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Successfull!");
+
+            }
+
+            @Override
+            public void onFailure(Call<Requisicion> call, Throwable t) {
+                Constants.dismissDialog();
+                Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
+            }
+        });
+    }
+
+    @OnClick(R.id.btnEntregaMateriales)
+    void OnClickEntregaMateriales() {
+        new AlertDialog.Builder(this)
+                .setTitle("Enviar materiales")
+                .setMessage("Desea enviar los materiales?")
+                .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //sendReqToServer();
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+            .show();
+
     }
 }
