@@ -7,19 +7,22 @@
     android:orientation="horizontal"
     android:padding="20dp">
 
-    <ImageView
-        android:id="@+id/imgLogoGenerico"
+    <TextView
+        android:id="@+id/txtCodigo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.5"
-        app:srcCompat="@drawable/ic_proyecto" />
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-condensed"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtNombreBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.1"
+        android:layout_weight="0.35"
         android:text="TextView" />
 </LinearLayout>

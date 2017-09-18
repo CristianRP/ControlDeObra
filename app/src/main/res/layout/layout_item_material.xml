@@ -41,7 +41,8 @@
         android:layout_weight="0.9"
         android:ems="10"
         android:enabled="false"
-        android:inputType="numberSigned" />
+        android:inputType="numberSigned"
+        android:visibility="gone" />
 
     <View
         android:background="@color/colorBlack"
@@ -68,7 +69,8 @@
         android:layout_weight="0.9"
         android:ems="10"
         android:enabled="false"
-        android:inputType="numberSigned" />
+        android:inputType="numberSigned"
+        android:visibility="gone" />
 
     <View
         android:background="@color/colorBlack"

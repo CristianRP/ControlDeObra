@@ -11,7 +11,7 @@ import android.content.Context;
 
 
 public class Constants {
-    public static final String HOST_NAME = "http://200.6.245.76:8090/";
+    public static final String HOST_NAME = "http://52.44.60.125:8090/";
     public static final String ENCRYPTOR_KEY = "&GRVP0.R0$u10617";
 
     private static ProgressDialog mProgressDialog;

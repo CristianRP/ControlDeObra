@@ -17,7 +17,7 @@
     <string name="btn_modelo">Modelo</string>
     <string name="btn_obra">Obra</string>
     <string name="btn_actividad">Actividad</string>
-    <string name="btn_tarea">Tarea</string>
+    <string name="btn_tarea">Corte</string>
     <string name="btn_select_all">Seleccionar todos</string>
     <string name="table_title">Estado de material</string>
     <string name="count_title">Cantidad/Unidad</string>

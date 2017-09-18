@@ -107,6 +107,7 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<BodyResponse>> call, Throwable t) {
                 Constants.dismissDialog();
+                t.printStackTrace();
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
             }
         });
@@ -148,6 +149,7 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Requisicion> call, Throwable t) {
                 Constants.dismissDialog();
+                t.printStackTrace();
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
                 Toast.makeText(EntregaMaterialesTableActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -166,11 +168,12 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
                         Intent entregaMateriales = getIntent();
                         for (BodyResponse response : mListaResponse) {
                             Requisicion req = new Requisicion(
+                                    // parametro = codproyecto parametro1 =codmodelo, parametro2 = codobra, parametro3 = codactividad
                                     entregaMateriales.getIntExtra("parametro", 0),
-                                    entregaMateriales.getIntExtra("parametro2", 0),
-                                    0,
+                                    entregaMateriales.getIntExtra("parametro1", 0),
                                     entregaMateriales.getIntExtra("parametro2", 0),
                                     entregaMateriales.getIntExtra("parametro3", 0),
+                                    entregaMateriales.getIntExtra("parametro4", 0),
                                     Integer.parseInt(response.getCodigo()),
                                     Double.parseDouble(String.valueOf(response.getDespacho())),
                                     response.getCodUnidad(),

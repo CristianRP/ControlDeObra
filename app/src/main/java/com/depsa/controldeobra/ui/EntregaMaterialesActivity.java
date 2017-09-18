@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 
@@ -59,6 +60,7 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
     private static final int GET_OBRA = 3;
     private static final int GET_ACTIVIDAD = 4;
     private static final int GET_TAREA = 5;
+    private static final int GET_DETALLE = 6;
     private int codProyecto;
     private int codModelo;
     private int codObra;
@@ -97,49 +99,66 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnModelo)
     void OnClickModelo() {
-        Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
-        proyecto.putExtra("tipoConsulta", GET_MODELOS);
-        proyecto.putExtra("parametro", codProyecto);
-        startActivityForResult(proyecto, GET_MODELOS);
+        if (codProyecto != 0) {
+            Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
+            proyecto.putExtra("tipoConsulta", GET_MODELOS);
+            proyecto.putExtra("parametro", codProyecto);
+            startActivityForResult(proyecto, GET_MODELOS);
+        } else {
+            Toast.makeText(this, "Seleccione el proyecto", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnObra)
     void OnClickObra() {
-        Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
-        proyecto.putExtra("tipoConsulta", GET_OBRA);
-        proyecto.putExtra("parametro", codProyecto);
-        proyecto.putExtra("parametro1", codModelo);
-        startActivityForResult(proyecto, GET_OBRA);
+        if (codModelo != 0) {
+            Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
+            proyecto.putExtra("tipoConsulta", GET_OBRA);
+            proyecto.putExtra("parametro", codProyecto);
+            proyecto.putExtra("parametro1", codModelo);
+            startActivityForResult(proyecto, GET_OBRA);
+        } else {
+            Toast.makeText(this, "Seleccione el modelo", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnActividad)
     void OnClickActividad() {
-        Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
-        proyecto.putExtra("tipoConsulta", GET_ACTIVIDAD);
-        proyecto.putExtra("parametro", codProyecto);
-        proyecto.putExtra("parametro1", codModelo);
-        startActivityForResult(proyecto, GET_ACTIVIDAD);
+        if (codObra != 0) {
+            Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
+            proyecto.putExtra("tipoConsulta", GET_ACTIVIDAD);
+            proyecto.putExtra("parametro", codProyecto);
+            proyecto.putExtra("parametro1", codModelo);
+            startActivityForResult(proyecto, GET_ACTIVIDAD);
+        } else {
+            Toast.makeText(this, "Selecciona la obra", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnTarea)
     void OnClickTarea() {
-        Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
-        proyecto.putExtra("tipoConsulta", GET_TAREA);
-        proyecto.putExtra("parametro", codProyecto);
-        proyecto.putExtra("parametro1", codModelo);
-        proyecto.putExtra("parametro2", codActividad);
-        startActivityForResult(proyecto, GET_TAREA);
+        if (codActividad != 0) {
+            Intent proyecto = new Intent(EntregaMaterialesActivity.this, BodyResponseActivity.class);
+            proyecto.putExtra("tipoConsulta", GET_TAREA);
+            proyecto.putExtra("parametro", codProyecto);
+            proyecto.putExtra("parametro1", codModelo);
+            proyecto.putExtra("parametro2", codActividad);
+            startActivityForResult(proyecto, GET_TAREA);
+        } else {
+            Toast.makeText(this, "Selecciona la actividad", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnSiguiente)
     void OnClickSiguiente() {
         Intent entrega = new Intent(EntregaMaterialesActivity.this, EntregaMaterialesTableActivity.class);
         //startActivity(new Intent(EntregaMaterialesActivity.this, EntregaMaterialesTableActivity.class));
-        entrega.putExtra("tipoConsulta", GET_TAREA);
+        entrega.putExtra("tipoConsulta", GET_DETALLE);
         entrega.putExtra("parametro", codProyecto);
         entrega.putExtra("parametro1", codModelo);
-        entrega.putExtra("parametro2", codActividad);
-        entrega.putExtra("parametro3", codTarea);
+        entrega.putExtra("parametro2", codObra);
+        entrega.putExtra("parametro3", codActividad);
+        entrega.putExtra("parametro4", codTarea);
         startActivity(entrega);
         Log.e("VALUES:", " " + codProyecto + " " + codModelo + " " + codObra + " " + codActividad +
                 " " + codTarea);
@@ -165,6 +184,8 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
                 codModelo = Integer.parseInt(data.getStringExtra("codigo"));
                 Log.d("VALUE MODELO", " " + codModelo);
                 mBtnModelo.setBackgroundColor(colorGreen);
+            } else {
+                Toast.makeText(this, "Selecciona el proyecto", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == GET_OBRA) {
             if (resultCode == RESULT_OK) {
@@ -181,6 +202,12 @@ public class EntregaMaterialesActivity extends AppCompatActivity {
         } else if (requestCode == GET_TAREA) {
             if (resultCode == RESULT_OK) {
                 codTarea = Integer.parseInt(data.getStringExtra("codigo"));
+                mButtonSiguiente.setEnabled(true);
+                mBtnTarea.setBackgroundColor(colorGreen);
+            }
+        } else if (requestCode == GET_DETALLE) {
+            if (resultCode == RESULT_OK) {
+                //codTarea = Integer.parseInt(data.getStringExtra("codigo"));
                 mButtonSiguiente.setEnabled(true);
                 mBtnTarea.setBackgroundColor(colorGreen);
             }

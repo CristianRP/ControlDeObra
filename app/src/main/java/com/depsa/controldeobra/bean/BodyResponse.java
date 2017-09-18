@@ -137,4 +137,8 @@ public class BodyResponse {
     public void setIncluir(String incluir) {
         this.incluir = incluir;
     }
+
+    public boolean calcularPorcentaje() {
+        return (despacho + cantidad) <= 100;
+    }
 }

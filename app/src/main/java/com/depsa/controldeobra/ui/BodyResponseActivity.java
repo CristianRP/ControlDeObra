@@ -78,8 +78,14 @@ public class BodyResponseActivity extends AppCompatActivity
                             entregaMateriales.getIntExtra("parametro1", 0),
                             entregaMateriales.getIntExtra("parametro2", 0),
                             0);
+        } else if (entregaMateriales.getIntExtra("tipoConsulta", 0) == 6) {
+            Constants.showDialog(this, cargandoStr);
+            getBodyResponse(entregaMateriales.getIntExtra("tipoConsulta", 0),
+                    entregaMateriales.getIntExtra("parametro", 0),
+                    entregaMateriales.getIntExtra("parametro1", 0),
+                    entregaMateriales.getIntExtra("parametro2", 0),
+                    0);
         }
-
     }
 
     @Override
@@ -112,6 +118,9 @@ public class BodyResponseActivity extends AppCompatActivity
             getBodyResponse = mControlObraWebAPI.getActividad(parameters[0], parameters[1], parameters[2]);
         } else if (parameters[0] == 5) {
             getBodyResponse = mControlObraWebAPI.getTarea(parameters[0], parameters[1], parameters[2], parameters[3],
+                    0);
+        } else if (parameters[0] == 6) {
+            getBodyResponse = mControlObraWebAPI.getDetalle(parameters[0], parameters[1], parameters[2], parameters[3],
                     0);
         }
         getBodyResponse.enqueue(new Callback<List<BodyResponse>>() {

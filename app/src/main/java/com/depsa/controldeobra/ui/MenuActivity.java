@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class MenuActivity extends AppCompatActivity
         implements MenuAdapter.OnItemClickListener {
 
-    public static String ENTREGA_MATERIALES_TXT = "ENTREGA DE MATERIALES";
+    public static String ENTREGA_MATERIALES_TXT = "AVANCE DE OBRA";
     public static String DEVOLUCION_MATERIAL_TXT = "DEVOLUCION DE MATERIAL";
     public static String RECEPCION_TAREAS_TXT = "RECEPCION DE TAREAS";
     public static String AVANCE_DE_OBRA = "AVANCE DE OBRA";

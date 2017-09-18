@@ -118,16 +118,17 @@
                         android:padding="10dp"
                         android:text="@string/btn_actividad" />
 
-                <Button
-                    android:id="@+id/btnTarea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:drawableEnd="@drawable/ic_next"
-                    android:background="@drawable/custom_options_button"
-                    android:padding="10dp"
-                    android:text="@string/btn_tarea" />
+                    <Button
+                        android:id="@+id/btnTarea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/custom_options_button"
+                        android:drawableEnd="@drawable/ic_next"
+                        android:padding="10dp"
+                        android:text="@string/btn_tarea"
+                        android:visibility="visible" />
 
             </LinearLayout>
 

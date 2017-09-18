@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.bean.BodyResponse;
@@ -131,6 +132,9 @@ public class BodyResponseDetalleAdapter
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     item.setDespacho(Integer.parseInt(s.toString()));
+                    if (!item.calcularPorcentaje()) {
+                        Toast.makeText(mContext, "El despacho sobrepasa el 100% revisa los datos!", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
                 }

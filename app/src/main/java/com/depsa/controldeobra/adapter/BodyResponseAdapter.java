@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.bean.BodyResponse;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,8 +50,10 @@ public class BodyResponseAdapter
     public static class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        @BindView(R.id.imgLogoGenerico)
-        ImageView imgLogoGenerico;
+        /*@BindView(R.id.imgLogoGenerico)
+        ImageView imgLogoGenerico;*/
+        @BindView(R.id.txtCodigo)
+        TextView txtCodigo;
         @BindView(R.id.txtNombreBody)
         TextView txtNombreBody;
 
@@ -90,8 +90,7 @@ public class BodyResponseAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         BodyResponse item = mListaBodyResponse.get(position);
-        if (item.getTipo().equals("PROYECTOS")) {
-            setImageWithPicasso(R.drawable.ic_proyecto, holder);
+        /*  setImageWithPicasso(R.drawable.ic_proyecto, holder);
         } else if (item.getTipo().equals("MODELO")) {
             setImageWithPicasso(R.drawable.ic_modelo, holder);
         } else if (item.getTipo().equals("OBRAS")) {
@@ -102,8 +101,8 @@ public class BodyResponseAdapter
             setImageWithPicasso(R.drawable.ic_tarea, holder);
         } else {
             setImageWithPicasso(R.drawable.logo_depsa, holder);
-        }
-
+        }*/
+        holder.txtCodigo.setText(item.getCodigo());
         if (!item.getNombre().isEmpty()) {
             holder.txtNombreBody.setText(item.getNombre());
         } else {
@@ -111,11 +110,11 @@ public class BodyResponseAdapter
         }
     }
 
-    private void setImageWithPicasso(int drawable, ViewHolder holder) {
+    /*private void setImageWithPicasso(int drawable, ViewHolder holder) {
         Picasso.with(mContext)
                 .load(drawable)
                 .into(holder.imgLogoGenerico);
-    }
+    }*/
 
     @Override
     public int getItemCount() {

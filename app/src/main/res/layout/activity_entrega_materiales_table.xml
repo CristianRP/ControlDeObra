@@ -28,19 +28,6 @@
         tools:layout_editor_absoluteY="85dp"
         tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BOD."
-        app:layout_constraintRight_toLeftOf="@+id/guideline7"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/guideline15"
-        android:layout_marginTop="5dp"
-        app:layout_constraintHorizontal_bias="0.0" />
-
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,19 +39,19 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DESP."
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline7"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3" />
+        android:layout_marginRight="8dp"
+        android:text="AVANCE"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+        app:layout_constraintRight_toLeftOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UNI."
-        app:layout_constraintRight_toLeftOf="@+id/guideline6"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3" />
+        android:text="AV ANTERIOR"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintRight_toLeftOf="@+id/textView4"
+        android:layout_marginRight="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -72,15 +59,6 @@
         android:id="@+id/guideline14"
         app:layout_constraintGuide_begin="402dp"
         android:orientation="vertical" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CANT."
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-        app:layout_constraintLeft_toRightOf="@+id/textView4"
-        android:layout_marginLeft="8dp" />
 
     <Button
         android:id="@+id/btnEntregaMateriales"
@@ -102,11 +80,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Incluir"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnEntregaMateriales" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
