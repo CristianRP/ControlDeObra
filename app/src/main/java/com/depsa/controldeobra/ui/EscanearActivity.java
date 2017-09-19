@@ -1,5 +1,6 @@
 package com.depsa.controldeobra.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,7 +12,7 @@ import butterknife.BindString;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
-public class EscanearActivity extends AppCompatActivity
+public class EscanearActivity extends Activity
         implements ZBarScannerView.ResultHandler {
 
     @BindString(R.string.escaner_load_text)
@@ -22,9 +23,8 @@ public class EscanearActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScannerView = new ZBarScannerView(this);
-        mScannerView.startCamera();
-        mScannerView.setAutoFocus(true);
         setContentView(mScannerView);
+        mScannerView.startCamera();
     }
 
     @Override

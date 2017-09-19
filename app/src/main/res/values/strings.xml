@@ -26,5 +26,6 @@
     <string name="btn_siguiente">Siguiente</string>
     <string name="escaner_load_text">Obteniendo datos &#8230;</string>
     <string name="btn_justificacion">Justificación</string>
+    <string name="title_activity_encabezado_solictud">EncabezadoSolictudActivity</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.depsa.controldeobra.adapter.MenuAdapter;
 import com.depsa.controldeobra.bean.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +32,8 @@ public class MenuActivity extends AppCompatActivity
     public static String RECEPCION_TAREAS_TXT = "RECEPCION DE TAREAS";
     public static String AVANCE_DE_OBRA = "AVANCE DE OBRA";
     public static String SOBREGIROS = "SOBREGIROS";
+    public static int TIPO_MATERIAL;
+    public static int NUMERO_SOLICITUD;
 
     public static ArrayList<MenuItem> ITEMS =
             new ArrayList<MenuItem>() {{
@@ -72,13 +76,32 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void btnManualOnClick(View v, int position) {
+        List<String> op = new ArrayList<>();
+        op.add("Ingresar número de solicitud");
+        op.add("Escanear");
         MenuItem menuItem = ITEMS.get(position);
         if (menuItem.getDescripcion().equals(AVANCE_DE_OBRA)) {
             Intent entrega = new Intent(MenuActivity.this, EntregaMaterialesActivity.class);
             entrega.putExtra("titulo", AVANCE_DE_OBRA);
             startActivity(entrega);
         } else if (menuItem.getDescripcion().equals(ENTREGA_MATERIALES_TXT)) {
-            showDialogSolicitud();
+            new MaterialDialog.Builder(this)
+                    .title("Entrega materiales")
+                    .items(op)
+                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                            if (which == 0) {
+                                showDialogSolicitud();
+                            } else if (which == 1) {
+                                startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
+                            }
+                            return false;
+                        }
+                    })
+                    .positiveText("Aceptar")
+                    .negativeText("Cancelar")
+                    .show();
         } else if (menuItem.getDescripcion().equals(DEVOLUCION_MATERIAL_TXT)) {
 
         } else if (menuItem.getDescripcion().equals(RECEPCION_TAREAS_TXT)) {
@@ -106,23 +129,21 @@ public class MenuActivity extends AppCompatActivity
 
         }
     }
-    int conio;
-    private void showDialogSolicitud() {
 
-        conio = 0;
+    private void showDialogSolicitud() {
         new MaterialDialog.Builder(this)
                 .title("Ingresa el número de solicitud:")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .input(null, null, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        conio = Integer.parseInt(input.toString());
+                        NUMERO_SOLICITUD = Integer.parseInt(input.toString());
                     }
                 })
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Toast.makeText(MenuActivity.this, "cnoio " + conio, Toast.LENGTH_SHORT).show();
+                        showDialogTipoMaterial();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -131,6 +152,26 @@ public class MenuActivity extends AppCompatActivity
                         dialog.dismiss();
                     }
                 })
+                .show();
+    }
+
+    private void showDialogTipoMaterial() {
+        List<String> tipos = new ArrayList<>();
+        tipos.add("Material");
+        tipos.add("Mano de obra");
+        new MaterialDialog.Builder(this)
+                .title("Tipo de material")
+                .items(tipos)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        TIPO_MATERIAL = which + 1;
+                        startActivity(new Intent(MenuActivity.this, EncabezadoSolictudActivity.class));
+                        return false;
+                    }
+                })
+                .positiveText("Aceptar")
+                .negativeText("Cancelar")
                 .show();
     }
 }
