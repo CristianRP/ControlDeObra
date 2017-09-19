@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.bean.MenuItem;
+import com.depsa.controldeobra.ui.MenuActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -107,7 +108,10 @@ public class MenuAdapter
                 listener.btnScanOnClick(v, position);
             }
         });
-    }
+        if (holder.mTitle.equals(MenuActivity.AVANCE_DE_OBRA)) {
+            holder.mBtnScan.setVisibility(View.GONE);
+        }
+     }
 
     @Override
     public int getItemCount() {
