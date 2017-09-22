@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -166,7 +164,10 @@ public class MenuActivity extends AppCompatActivity
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         TIPO_MATERIAL = which + 1;
-                        startActivity(new Intent(MenuActivity.this, EncabezadoSolictudActivity.class));
+                        Intent encabezado = new Intent(MenuActivity.this, EncabezadoSolictudActivity.class);
+                        encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
+                        encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
+                        startActivity(encabezado);
                         return false;
                     }
                 })

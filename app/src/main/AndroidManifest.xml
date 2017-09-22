@@ -50,6 +50,10 @@
         <activity
             android:name=".ui.EncabezadoSolictudActivity"
             android:label="@string/title_activity_encabezado_solictud"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.DetalleSolicitudActivity"
+            android:label="@string/title_activity_detalle_solicitud"
             android:theme="@style/AppTheme"></activity>
     </application>
 
