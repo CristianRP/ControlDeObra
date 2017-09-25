@@ -28,16 +28,16 @@ public class DetalleSolicitudResponse {
     private String unidadMedida;
     @SerializedName("SOLICITADO")
     @Expose
-    private Integer solicitado;
+    private double solicitado;
     @SerializedName("BODEGA")
     @Expose
-    private Integer bodega;
+    private Double bodega;
     @SerializedName("DESPACHO")
     @Expose
     private Integer despacho;
     @SerializedName("SALDO")
     @Expose
-    private Integer saldo;
+    private double saldo;
     @SerializedName("INCLUIR")
     @Expose
     private String incluir;
@@ -46,8 +46,8 @@ public class DetalleSolicitudResponse {
     }
 
     public DetalleSolicitudResponse(String codigo, String nombre, Integer cantidad, String tipo,
-                                    Integer codUnidad, String unidadMedida, Integer solicitado,
-                                    Integer bodega, Integer despacho, Integer saldo, String incluir) {
+                                    Integer codUnidad, String unidadMedida, double solicitado,
+                                    Double bodega, Integer despacho, Integer saldo, String incluir) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.cantidad = cantidad;
@@ -109,7 +109,7 @@ public class DetalleSolicitudResponse {
         this.unidadMedida = unidadMedida;
     }
 
-    public Integer getSolicitado() {
+    public double getSolicitado() {
         return solicitado;
     }
 
@@ -117,11 +117,11 @@ public class DetalleSolicitudResponse {
         this.solicitado = solicitado;
     }
 
-    public Integer getBodega() {
+    public double getBodega() {
         return bodega;
     }
 
-    public void setBodega(Integer bodega) {
+    public void setBodega(Double bodega) {
         this.bodega = bodega;
     }
 
@@ -133,7 +133,7 @@ public class DetalleSolicitudResponse {
         this.despacho = despacho;
     }
 
-    public Integer getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 

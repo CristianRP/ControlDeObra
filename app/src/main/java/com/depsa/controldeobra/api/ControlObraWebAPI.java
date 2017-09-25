@@ -1,6 +1,7 @@
 package com.depsa.controldeobra.api;
 
 import com.depsa.controldeobra.bean.BodyResponse;
+import com.depsa.controldeobra.bean.DetalleSolicitudBody;
 import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
 import com.depsa.controldeobra.bean.Requisicion;
 import com.depsa.controldeobra.bean.SolicitudEncabezadoResponse;
@@ -62,4 +63,13 @@ public interface ControlObraWebAPI {
     @POST("api/DetalleSolicitud")
     Call<List<DetalleSolicitudResponse>> getDetalleSolicitud(@Query("solicitud") int solicitud,
                                                              @Query("tipoMaterial") int tipoMaterial);
+
+    @POST("api/ActualizarDetalleReq")
+    Call<Void> actualizarDetalle(@Body DetalleSolicitudBody detalleSolicitudBody);
+
+    @POST("api/GeneraSalida")
+    Call<Void> generarSalirda(@Query("prSolicitud") int solicitud);
+
+    @POST("api/GeneraSalidaManoObra")
+    Call<Void> generarSalidaManoObra(@Query("prSolicitud") int solicitud);
 }

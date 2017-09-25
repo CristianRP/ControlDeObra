@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Cristian Ramírez on 2/08/17.
- * Email: cristian.ramirez@mayan-tech.com
- * Copyright (c) 2017 Mayantech
+ * Copyright (c) 2017
  */
 public class Requisicion {
     @SerializedName("CodProyecto")

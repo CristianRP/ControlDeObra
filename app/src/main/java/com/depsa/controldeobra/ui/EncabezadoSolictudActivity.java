@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +43,7 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
     TextView mObra;
     private ControlObraWebAPI mControlObraWebAPI;
     public static String TAG = EncabezadoSolictudActivity.class.getSimpleName();
+    private Double COD_PROYECTO = 0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,7 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
     private void setDataToViews(SolicitudEncabezadoResponse response) {
         String proyecto = String.format(Locale.getDefault(),"%.0f %2s", response.getCodProyecto(), response.getNombreProyecto());
         mProyecto.setText(proyecto);
+        COD_PROYECTO = response.getCodProyecto();
         String bodega = String.format(Locale.getDefault(), "%.0f %2s", response.getCodBodega(), response.getNombreBodega());
         mBodega.setText(bodega);
         String modelo = String.format(Locale.getDefault(), "%.0f %2s", response.getCodModelo(), response.getNombreModelo());
@@ -116,6 +119,15 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
         mTarea.setText(tarea);
         String obra = String.format(Locale.getDefault(), "%.0f %2s", response.getCodObra(), response.getNombreObra());
         mObra.setText(obra);
+    }
+
+    @OnClick(R.id.btnDetalleSolicitud)
+    void OnClickDetalleSolicitud() {
+        Intent detalle = new Intent(EncabezadoSolictudActivity.this, DetalleSolicitudActivity.class);
+        detalle.putExtra("solicitud", getIntent().getIntExtra("solicitud", 0));
+        detalle.putExtra("tipoMaterial", getIntent().getIntExtra("tipoMaterial", 0));
+        detalle.putExtra("codProyecto", COD_PROYECTO);
+        startActivity(detalle);
     }
 
 }

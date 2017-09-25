@@ -1,0 +1,128 @@
+package com.depsa.controldeobra.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.depsa.controldeobra.R;
+import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * Created by cristian on 9/23/17.
+ */
+
+public class SolicitudDetalleResponseAdapter
+        extends RecyclerView.Adapter<SolicitudDetalleResponseAdapter.ViewHolder> {
+
+
+    private Context mContext;
+    private List<DetalleSolicitudResponse> mListaDetalleSolicitudResponse;
+
+    public interface OnItemClickListener {
+        void onItemClick(ViewHolder item, int position);
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return listener;
+    }
+
+    public SolicitudDetalleResponseAdapter(List<DetalleSolicitudResponse> items, Context context) {
+        this.mListaDetalleSolicitudResponse = items;
+        this.mContext = context;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
+
+        @BindView(R.id.txtDescripcion)
+        TextView mDescripcion;
+        @BindView(R.id.txtDespacho)
+        EditText mDespacho;
+        @BindView(R.id.txtCantidad)
+        EditText mBodega;
+
+        private SolicitudDetalleResponseAdapter parent = null;
+
+        public ViewHolder(View v, SolicitudDetalleResponseAdapter parent) {
+            super(v);
+            v.setOnClickListener(this);
+            this.parent = parent;
+            ButterKnife.bind(this, v);
+        }
+
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @Override
+        public void onClick(View v) {
+            final OnItemClickListener listener = parent.getOnItemClickListener();
+            if (listener != null) {
+                listener.onItemClick(this, getAdapterPosition());
+            }
+        }
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.layout_item_material_detalle, parent, false);
+        return new ViewHolder(v, this);
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final DetalleSolicitudResponse item = mListaDetalleSolicitudResponse.get(position);
+        holder.mDescripcion.setText(item.getNombre());
+        holder.mBodega.setText(String.valueOf(item.getBodega()));
+        holder.mDespacho.setTag(position);
+        holder.mDespacho.setText(String.valueOf(item.getDespacho()), TextView.BufferType.EDITABLE);
+        Log.e("test", " " + holder.mDespacho.getTag());
+        holder.mDespacho.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    item.setDespacho(Integer.parseInt(s.toString()));
+                    /*if (!item.calcularPorcentaje()) {
+                        Toast.makeText(mContext, "El despacho sobrepasa el 100% revisa los datos!", Toast.LENGTH_SHORT).show();
+                    }*/
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return mListaDetalleSolicitudResponse.size();
+    }
+}
