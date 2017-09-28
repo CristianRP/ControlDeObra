@@ -53,8 +53,9 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.DetalleSolicitudActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:label="@string/title_activity_detalle_solicitud"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

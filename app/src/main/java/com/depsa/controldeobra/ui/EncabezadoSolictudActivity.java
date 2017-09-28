@@ -44,6 +44,7 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
     private ControlObraWebAPI mControlObraWebAPI;
     public static String TAG = EncabezadoSolictudActivity.class.getSimpleName();
     private Double COD_PROYECTO = 0d;
+    private Double COD_BODEGA = 0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
         COD_PROYECTO = response.getCodProyecto();
         String bodega = String.format(Locale.getDefault(), "%.0f %2s", response.getCodBodega(), response.getNombreBodega());
         mBodega.setText(bodega);
+        COD_BODEGA = response.getCodBodega();
         String modelo = String.format(Locale.getDefault(), "%.0f %2s", response.getCodModelo(), response.getNombreModelo());
         mModelo.setText(modelo);
         String actividad = String.format(Locale.getDefault(), "%.0f %2s", response.getCodActividad(), response.getNombreActividad());
@@ -127,6 +129,7 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
         detalle.putExtra("solicitud", getIntent().getIntExtra("solicitud", 0));
         detalle.putExtra("tipoMaterial", getIntent().getIntExtra("tipoMaterial", 0));
         detalle.putExtra("codProyecto", COD_PROYECTO);
+        detalle.putExtra("codBodega", COD_BODEGA);
         startActivity(detalle);
     }
 

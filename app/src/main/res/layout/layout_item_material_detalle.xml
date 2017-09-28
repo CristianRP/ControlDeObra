@@ -7,6 +7,20 @@
     android:background="@drawable/background_cell"
     android:orientation="horizontal">
 
+    <EditText
+        android:id="@+id/txtCod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="numberSigned" />
+
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/txtDescripcion"
         android:layout_width="match_parent"
@@ -55,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.9"
         android:ems="10"
-        android:inputType="numberSigned" />
+        android:inputType="numberDecimal" />
 
     <View
         android:background="@color/colorBlack"
@@ -71,6 +85,20 @@
         android:enabled="false"
         android:inputType="numberSigned"
         android:visibility="gone" />
+
+    <View
+        android:background="@color/colorBlack"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/txtSaldo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.9"
+        android:enabled="false"
+        android:ems="10" />
 
 
 </LinearLayout>

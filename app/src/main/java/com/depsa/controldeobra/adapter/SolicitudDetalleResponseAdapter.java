@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
@@ -58,6 +59,11 @@ public class SolicitudDetalleResponseAdapter
         EditText mDespacho;
         @BindView(R.id.txtCantidad)
         EditText mBodega;
+        @BindView(R.id.txtSaldo)
+        EditText mSaldo;
+        @BindView(R.id.txtCod)
+        EditText mCod;
+
 
         private SolicitudDetalleResponseAdapter parent = null;
 
@@ -96,7 +102,9 @@ public class SolicitudDetalleResponseAdapter
         holder.mBodega.setText(String.valueOf(item.getBodega()));
         holder.mDespacho.setTag(position);
         holder.mDespacho.setText(String.valueOf(item.getDespacho()), TextView.BufferType.EDITABLE);
+        holder.mSaldo.setText(String.valueOf(item.getSaldo()));
         Log.e("test", " " + holder.mDespacho.getTag());
+        holder.mCod.setText(item.getCodigo());
         holder.mDespacho.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -107,9 +115,9 @@ public class SolicitudDetalleResponseAdapter
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     item.setDespacho(Integer.parseInt(s.toString()));
-                    /*if (!item.calcularPorcentaje()) {
-                        Toast.makeText(mContext, "El despacho sobrepasa el 100% revisa los datos!", Toast.LENGTH_SHORT).show();
-                    }*/
+                    if (!item.calcularSaldo()) {
+                        Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
                 }

@@ -159,8 +159,8 @@ public class EntregaMaterialesTableActivity extends AppCompatActivity {
     @OnClick(R.id.btnEntregaMateriales)
     void OnClickEntregaMateriales() {
         new AlertDialog.Builder(this)
-                .setTitle("Enviar materiales")
-                .setMessage("Desea enviar los materiales?")
+                .setTitle("Envio de avance de obra")
+                .setMessage("Desea enviar el avance?")
                 .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

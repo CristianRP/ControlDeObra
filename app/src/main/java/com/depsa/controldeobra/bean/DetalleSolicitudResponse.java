@@ -148,4 +148,8 @@ public class DetalleSolicitudResponse {
     public void setIncluir(String incluir) {
         this.incluir = incluir;
     }
+
+    public boolean calcularSaldo() {
+        return despacho <= bodega;
+    }
 }

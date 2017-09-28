@@ -42,6 +42,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     private SolicitudDetalleResponseAdapter mAdapter;
     private ControlObraWebAPI mControlObraWebAPI;
     private List<DetalleSolicitudResponse> mListaResponse;
+    public static boolean checkDespacho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     }
 
     private void sendReqToServer(DetalleSolicitudBody detalleSolicitud) {
+        Constants.showDialog(DetalleSolicitudActivity.this, "Enviando datos...");
         Call<Void> updateSolicitud = mControlObraWebAPI.actualizarDetalle(detalleSolicitud);
         updateSolicitud.enqueue(new Callback<Void>() {
             @Override
@@ -166,12 +168,19 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
                         for (DetalleSolicitudResponse response : mListaResponse) {
-                            Log.e("DESPACHO", response.getDespacho() + " " );
+                            if (!response.calcularSaldo()) {
+                                Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                return;
+                            }
+                        }
+                        for (DetalleSolicitudResponse response : mListaResponse) {
+                            Log.e("DESPACHO", response.getDespacho() + " ");
                             DetalleSolicitudBody detailBody = new DetalleSolicitudBody(
                                     (int) entregaMateriales.getDoubleExtra("codProyecto", 0d),
-                                    (int) response.getBodega(),
-                                    entregaMateriales.getIntExtra("solicitud", 0),
+                                    (int) entregaMateriales.getDoubleExtra("codBodega", 0d),
                                     Integer.parseInt(response.getCodigo()),
+                                    response.getCodUnidad(),
                                     entregaMateriales.getIntExtra("solicitud", 0),
                                     response.getBodega(),
                                     response.getSolicitado(),
@@ -197,7 +206,6 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-
     }
 
     private void generarSalida() {
