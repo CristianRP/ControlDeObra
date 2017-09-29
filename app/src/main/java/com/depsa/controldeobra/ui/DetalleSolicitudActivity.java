@@ -18,6 +18,7 @@ import com.depsa.controldeobra.api.ControlObraWebAPI;
 import com.depsa.controldeobra.api.ServiceGenerator;
 import com.depsa.controldeobra.bean.DetalleSolicitudBody;
 import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
+import com.depsa.controldeobra.preferences.PrefManager;
 import com.depsa.controldeobra.util.Constants;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     private ControlObraWebAPI mControlObraWebAPI;
     private List<DetalleSolicitudResponse> mListaResponse;
     public static boolean checkDespacho;
+    private PrefManager mPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         mControlObraWebAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
+        mPrefManager = new PrefManager(this);
 
         mRecyclerMateriales.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -168,6 +171,9 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
                         for (DetalleSolicitudResponse response : mListaResponse) {
+                            if (mPrefManager.getUserPerfil().equals("RESIDENTE")){ ///BODEGUERO  SUPERVISOR
+
+                            }
                             if (!response.calcularSaldo()) {
                                 Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();

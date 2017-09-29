@@ -37,6 +37,7 @@ public class MenuActivity extends AppCompatActivity
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
                 add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
+                add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
                 //add(new MenuItem(RECEPCION_TAREAS_TXT, R.drawable.recepcion_tareas));
                 //add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
                 //add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
@@ -105,7 +106,23 @@ public class MenuActivity extends AppCompatActivity
         } else if (menuItem.getDescripcion().equals(RECEPCION_TAREAS_TXT)) {
 
         } else if (menuItem.getDescripcion().equals(SOBREGIROS)) {
-
+            new MaterialDialog.Builder(this)
+                    .title("Entrega materiales")
+                    .items(op)
+                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                            if (which == 0) {
+                                showDialogSolicitud();
+                            } else if (which == 1) {
+                                startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
+                            }
+                            return false;
+                        }
+                    })
+                    .positiveText("Aceptar")
+                    .negativeText("Cancelar")
+                    .show();
         }
     }
 
