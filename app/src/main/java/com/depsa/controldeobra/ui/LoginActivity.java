@@ -8,16 +8,29 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
+import com.depsa.controldeobra.api.ControlObraWebAPI;
+import com.depsa.controldeobra.api.ServiceGenerator;
+import com.depsa.controldeobra.bean.LoginResponse;
+import com.depsa.controldeobra.preferences.PrefManager;
+import com.depsa.controldeobra.util.Constants;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -29,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText mClave;
     @BindView(R.id.btnEntrar)
     Button mBtnEntrar;
+    private ControlObraWebAPI mControlAPI;
+    private PrefManager mPrefManager;
 
     private String[] permissions = new String[] {
             Manifest.permission.CAMERA,
@@ -45,14 +60,29 @@ public class LoginActivity extends AppCompatActivity {
                 .load(R.drawable.logo_depsa)
                 .into(mImgLogo);
 
+        mPrefManager = new PrefManager(this);
+
         if (!hasPermissions(this, permissions)) {
             ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
         }
+
+        /*if (mPrefManager.isLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+            finish();
+        }*/
+
+        mControlAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
     }
 
     @OnClick(R.id.btnEntrar)
     void OnEntrarClick() {
-        startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+        if (!mUserName.getText().toString().isEmpty() &&
+                !mClave.getText().toString().isEmpty()) {
+            Constants.showDialog(LoginActivity.this, "Autenticando...");
+            autenticacionUser();
+        } else {
+            Toast.makeText(this, "Ingresa tus credenciales!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
@@ -64,5 +94,54 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private void autenticacionUser() {
+        Call<List<LoginResponse>> autenticarUser = mControlAPI.autenticarUsuario(mUserName.getText().toString(),
+                mClave.getText().toString());
+        autenticarUser.enqueue(new Callback<List<LoginResponse>>() {
+            @Override
+            public void onResponse(Call<List<LoginResponse>> call, Response<List<LoginResponse>> response) {
+                Constants.dismissDialog();
+                String error = "Ha ocurrido un error. Contacte con el administrador";
+                if (!response.isSuccessful()) {
+                    if (response.raw().code() != 200) {
+                        //Toast.makeText(DetalleSolicitudActivity.this, error, Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR ENVIANDO ", error + " " + response.errorBody().toString());
+                        return;
+                    }
+                    if (response.errorBody()
+                            .contentType()
+                            .subtype()
+                            .equals("json")) {
+                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Error " + response.errorBody().toString());
+                    } else {
+                        try {
+                            // Errores no relacionados con el API
+                            Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                //Toast.makeText(LoginActivity.this, "Salida generada con éxito", Toast.LENGTH_SHORT).show();
+                if (!response.body().get(0).getUsuario().isEmpty()) {
+                    mPrefManager.createLoginSession(response.body().get(0));
+                    startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Error de crendeciales.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LoginResponse>> call, Throwable t) {
+                Constants.dismissDialog();
+                t.printStackTrace();
+                Log.e(LoginActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
+                Toast.makeText(LoginActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
