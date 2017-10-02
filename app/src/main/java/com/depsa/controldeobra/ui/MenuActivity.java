@@ -15,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.adapter.MenuAdapter;
 import com.depsa.controldeobra.bean.MenuItem;
+import com.depsa.controldeobra.preferences.PrefManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,19 @@ public class MenuActivity extends AppCompatActivity
     public static int TIPO_MATERIAL;
     public static int NUMERO_SOLICITUD;
 
-    public static ArrayList<MenuItem> ITEMS =
+    public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
                 add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
+            }};
+    public static ArrayList<MenuItem> ITEMS_BODEGUERO =
+            new ArrayList<MenuItem>() {{
+                add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
+            }};
+    public static ArrayList<MenuItem> ITEMS_RESIDENTE =
+            new ArrayList<MenuItem>() {{
+                add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
                 add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
-                //add(new MenuItem(RECEPCION_TAREAS_TXT, R.drawable.recepcion_tareas));
-                //add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
-                //add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
             }};
     @BindView(R.id.recyclerViewMenu)
     RecyclerView mRecyclerViewMenu;
@@ -49,6 +55,8 @@ public class MenuActivity extends AppCompatActivity
 
     private LinearLayoutManager mLayoutManager;
     private MenuAdapter mAdapter;
+    private PrefManager mPrefManager;
+    private MenuItem menuItem;
 
 
     @Override
@@ -61,7 +69,14 @@ public class MenuActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerViewMenu.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MenuAdapter(ITEMS, this);
+        mPrefManager = new PrefManager(this);
+        if (mPrefManager.getUserPerfil().equals("SUPERVISOR")) {
+            mAdapter = new MenuAdapter(ITEMS_SUPERVISOR, this);
+        } else if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
+            mAdapter = new MenuAdapter(ITEMS_BODEGUERO, this);
+        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE")) {
+            mAdapter = new MenuAdapter(ITEMS_RESIDENTE, this);
+        }
         mAdapter.setHasStableIds(true);
         mAdapter.setOnItemClickListener(this);
         mRecyclerViewMenu.setAdapter(mAdapter);
@@ -78,7 +93,14 @@ public class MenuActivity extends AppCompatActivity
         List<String> op = new ArrayList<>();
         op.add("Ingresar número de solicitud");
         op.add("Escanear");
-        MenuItem menuItem = ITEMS.get(position);
+        if (mPrefManager.getUserPerfil().equals("SUPERVISOR")) {
+            menuItem = ITEMS_SUPERVISOR.get(position);
+        } else if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
+            menuItem = ITEMS_BODEGUERO.get(position);
+        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE")) {
+            menuItem = ITEMS_RESIDENTE.get(position);
+        }
+
         if (menuItem.getDescripcion().equals(AVANCE_DE_OBRA)) {
             Intent entrega = new Intent(MenuActivity.this, EntregaMaterialesActivity.class);
             entrega.putExtra("titulo", AVANCE_DE_OBRA);
@@ -128,7 +150,13 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void btnScanOnClick(View v, int position) {
-        MenuItem menuItem = ITEMS.get(position);
+        if (mPrefManager.getUserPerfil().equals("SUPERVISOR")) {
+            menuItem = ITEMS_SUPERVISOR.get(position);
+        } else if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
+            menuItem = ITEMS_BODEGUERO.get(position);
+        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE")) {
+            menuItem = ITEMS_RESIDENTE.get(position);
+        }
         if (menuItem.getDescripcion().equals(AVANCE_DE_OBRA)) {
             /*Intent entrega = new Intent(MenuActivity.this, EntregaMaterialesActivity.class);
             entrega.putExtra("titulo", AVANCE_DE_OBRA);

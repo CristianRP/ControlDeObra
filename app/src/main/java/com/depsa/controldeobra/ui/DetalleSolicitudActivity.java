@@ -170,16 +170,16 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
-                        for (DetalleSolicitudResponse response : mListaResponse) {
-                            if (mPrefManager.getUserPerfil().equals("RESIDENTE")){ ///BODEGUERO  SUPERVISOR
-
-                            }
-                            if (!response.calcularSaldo()) {
-                                Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                return;
+                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE")){ ///BODEGUERO  SUPERVISOR
+                            for (DetalleSolicitudResponse response : mListaResponse) {
+                                if (!response.calcularSaldo()) {
+                                    Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
                             }
                         }
+
                         for (DetalleSolicitudResponse response : mListaResponse) {
                             Log.e("DESPACHO", response.getDespacho() + " ");
                             DetalleSolicitudBody detailBody = new DetalleSolicitudBody(
