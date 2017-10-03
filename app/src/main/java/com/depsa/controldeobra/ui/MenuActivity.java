@@ -38,6 +38,7 @@ public class MenuActivity extends AppCompatActivity
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
                 add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
+                add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
             }};
     public static ArrayList<MenuItem> ITEMS_BODEGUERO =
             new ArrayList<MenuItem>() {{
@@ -124,7 +125,33 @@ public class MenuActivity extends AppCompatActivity
                     .negativeText("Cancelar")
                     .show();
         } else if (menuItem.getDescripcion().equals(DEVOLUCION_MATERIAL_TXT)) {
-
+            new MaterialDialog.Builder(this)
+                    .title("Ingresa el número de solicitud:")
+                    .inputType(InputType.TYPE_CLASS_NUMBER)
+                    .input(null, null, false, new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            NUMERO_SOLICITUD = Integer.parseInt(input.toString());
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            TIPO_MATERIAL = 1;
+                            Intent encabezado = new Intent(MenuActivity.this, EncabezadoSolictudActivity.class);
+                            encabezado.putExtra("idMenu", "devolucion");
+                            encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
+                            encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
+                            startActivity(encabezado);
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         } else if (menuItem.getDescripcion().equals(RECEPCION_TAREAS_TXT)) {
 
         } else if (menuItem.getDescripcion().equals(SOBREGIROS)) {

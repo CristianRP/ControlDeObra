@@ -45,6 +45,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     private List<DetalleSolicitudResponse> mListaResponse;
     public static boolean checkDespacho;
     private PrefManager mPrefManager;
+    private boolean isSelectedAll = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +154,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                 t.printStackTrace();
                 call.clone();
                 Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador" + t.getLocalizedMessage() +
-                t.getMessage() + t.getCause());
+                        t.getMessage() + t.getCause());
                 Toast.makeText(DetalleSolicitudActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -170,7 +171,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
-                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE")){ ///BODEGUERO  SUPERVISOR
+                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE")) { ///BODEGUERO  SUPERVISOR
                             for (DetalleSolicitudResponse response : mListaResponse) {
                                 if (!response.calcularSaldo()) {
                                     Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
@@ -199,6 +200,8 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                         if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
                             // MATERIALES
                             generarSalida();
+                        } else if (getIntent().getStringExtra("idMenu").equals("devolucion")) {
+                            // TODO: DFA
                         } else {
                             // mano de obra
                             generarSalidaManoObra();
@@ -297,6 +300,64 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                 Toast.makeText(DetalleSolicitudActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void generaDevolucion() {
+        Call<Void> generaSalida = mControlObraWebAPI.generaDevolucion(getIntent().getIntExtra("solicitud", 0));
+        generaSalida.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Constants.dismissDialog();
+                String error = "Ha ocurrido un error. Contacte con el administrador";
+                if (!response.isSuccessful()) {
+                    if (response.raw().code() != 200) {
+                        //Toast.makeText(DetalleSolicitudActivity.this, error, Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR ENVIANDO ", error + " " + response.errorBody().toString());
+                        return;
+                    }
+                    if (response.errorBody()
+                            .contentType()
+                            .subtype()
+                            .equals("json")) {
+                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Error " + response.errorBody().toString());
+                    } else {
+                        try {
+                            // Errores no relacionados con el API
+                            Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                Toast.makeText(DetalleSolicitudActivity.this, "Devolucion generada con éxito", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DetalleSolicitudActivity.this, MenuActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Constants.dismissDialog();
+                t.printStackTrace();
+                Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
+                //Toast.makeText(DetalleSolicitudActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @OnClick(R.id.btnSeleccionarTodos)
+    void OnClickSeleccionarTodos() {
+        if (isSelectedAll) {
+            isSelectedAll = false;
+            for (DetalleSolicitudResponse d : mListaResponse) {
+                d.setDespacho((int) d.getBodega());
+            }
+        } else {
+            isSelectedAll = true;
+            for (DetalleSolicitudResponse d : mListaResponse) {
+                d.setDespacho(0);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
 }

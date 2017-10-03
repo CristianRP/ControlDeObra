@@ -76,4 +76,7 @@ public interface ControlObraWebAPI {
 
     @POST("api/login")
     Call<List<LoginResponse>> autenticarUsuario(@Query("username") String username, @Query("password") String password);
+
+    @POST("api/GeneraDevolucion")
+    Call<Void> generaDevolucion(@Query("prDevolucion") int devolucion);
 }
