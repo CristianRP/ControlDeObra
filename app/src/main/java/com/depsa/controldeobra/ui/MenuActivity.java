@@ -227,8 +227,12 @@ public class MenuActivity extends AppCompatActivity
 
     private void showDialogTipoMaterial() {
         List<String> tipos = new ArrayList<>();
-        tipos.add("Material");
-        tipos.add("Mano de obra");
+        if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
+            tipos.add("Material");
+        } else {
+            tipos.add("Material");
+            tipos.add("Mano de obra");
+        }
         new MaterialDialog.Builder(this)
                 .title("Tipo de material")
                 .items(tipos)

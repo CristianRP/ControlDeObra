@@ -46,6 +46,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     public static boolean checkDespacho;
     private PrefManager mPrefManager;
     private boolean isSelectedAll = true;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
 
     private void setDataToRecycler(List<DetalleSolicitudResponse> items) {
         mAdapter = new SolicitudDetalleResponseAdapter(items, this);
-        mAdapter.setHasStableIds(true);
+        mAdapter.setHasStableIds(false);
         mRecyclerMateriales.setAdapter(mAdapter);
     }
 
@@ -196,15 +197,19 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                                     "android"
                             );
                             sendReqToServer(detailBody);
+                            count++;
                         }
-                        if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
-                            // MATERIALES
-                            generarSalida();
-                        } else if (getIntent().getStringExtra("idMenu").equals("devolucion")) {
-                            // TODO: DFA
-                        } else {
-                            // mano de obra
-                            generarSalidaManoObra();
+                        Log.e("puta ", "count "  + count + " size " + mListaResponse.size());
+                        if (count == mListaResponse.size()) {
+                            if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
+                                // MATERIALES
+                                generarSalida();
+                            } else if (getIntent().getStringExtra("idMenu").equals("devolucion")) {
+                                // TODO: DFA
+                            } else {
+                                // mano de obra
+                                generarSalidaManoObra();
+                            }
                         }
                     }
                 })
@@ -349,7 +354,8 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
         if (isSelectedAll) {
             isSelectedAll = false;
             for (DetalleSolicitudResponse d : mListaResponse) {
-                d.setDespacho((int) d.getBodega());
+                //String n = String.format(Locale.getDefault(), "%.2f", d.getSolicitado());
+                d.setDespacho(Math.floor(d.getSaldo()));
             }
         } else {
             isSelectedAll = true;
