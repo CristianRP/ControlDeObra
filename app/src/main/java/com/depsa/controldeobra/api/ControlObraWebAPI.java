@@ -63,7 +63,8 @@ public interface ControlObraWebAPI {
 
     @POST("api/DetalleSolicitud")
     Call<List<DetalleSolicitudResponse>> getDetalleSolicitud(@Query("solicitud") int solicitud,
-                                                             @Query("tipoMaterial") int tipoMaterial);
+                                                             @Query("tipoMaterial") int tipoMaterial,
+                                                             @Query("tipoTransaccion") String tipoTransaccion);
 
     @POST("api/ActualizarDetalleReq")
     Call<Void> actualizarDetalle(@Body DetalleSolicitudBody detalleSolicitudBody);

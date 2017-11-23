@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -33,12 +34,14 @@ public class MenuActivity extends AppCompatActivity
     public static String SOBREGIROS = "SOBREGIROS";
     public static int TIPO_MATERIAL;
     public static int NUMERO_SOLICITUD;
+    public static String TIPO_MENU;
 
     public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
                 add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
                 add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
+                add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
             }};
     public static ArrayList<MenuItem> ITEMS_BODEGUERO =
             new ArrayList<MenuItem>() {{
@@ -105,6 +108,7 @@ public class MenuActivity extends AppCompatActivity
         if (menuItem.getDescripcion().equals(AVANCE_DE_OBRA)) {
             Intent entrega = new Intent(MenuActivity.this, EntregaMaterialesActivity.class);
             entrega.putExtra("titulo", AVANCE_DE_OBRA);
+            TIPO_MENU = "";
             startActivity(entrega);
         } else if (menuItem.getDescripcion().equals(ENTREGA_MATERIALES_TXT)) {
             new MaterialDialog.Builder(this)
@@ -114,9 +118,12 @@ public class MenuActivity extends AppCompatActivity
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                             if (which == 0) {
-                                showDialogSolicitud();
+                                showDialogSolicitud(ENTREGA_MATERIALES_TXT);
                             } else if (which == 1) {
-                                startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
+                                Intent scann = new Intent(MenuActivity.this, EscanearActivity.class);
+                                scann.putExtra("tipoMenu", ENTREGA_MATERIALES_TXT);
+                                TIPO_MENU = ENTREGA_MATERIALES_TXT;
+                                startActivity(scann);
                             }
                             return false;
                         }
@@ -132,6 +139,7 @@ public class MenuActivity extends AppCompatActivity
                         @Override
                         public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             NUMERO_SOLICITUD = Integer.parseInt(input.toString());
+                            Log.e("numoero solicitud", " " + NUMERO_SOLICITUD );
                         }
                     })
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -142,6 +150,8 @@ public class MenuActivity extends AppCompatActivity
                             encabezado.putExtra("idMenu", "devolucion");
                             encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
                             encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
+                            encabezado.putExtra("tipoMenu", DEVOLUCION_MATERIAL_TXT);
+                            TIPO_MENU = DEVOLUCION_MATERIAL_TXT;
                             startActivity(encabezado);
                         }
                     })
@@ -162,9 +172,12 @@ public class MenuActivity extends AppCompatActivity
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                             if (which == 0) {
-                                showDialogSolicitud();
+                                showDialogSolicitud(SOBREGIROS);
                             } else if (which == 1) {
-                                startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
+                                Intent scann = new Intent(MenuActivity.this, EscanearActivity.class);
+                                scann.putExtra("tipoMenu", SOBREGIROS);
+                                TIPO_MENU = SOBREGIROS;
+                                startActivity(scann);
                             }
                             return false;
                         }
@@ -200,7 +213,7 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
-    private void showDialogSolicitud() {
+    private void showDialogSolicitud(final String tipoMenu) {
         new MaterialDialog.Builder(this)
                 .title("Ingresa el número de solicitud:")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -208,12 +221,13 @@ public class MenuActivity extends AppCompatActivity
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         NUMERO_SOLICITUD = Integer.parseInt(input.toString());
+                        Log.e("numoero solicitud", " " + NUMERO_SOLICITUD );
                     }
                 })
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        showDialogTipoMaterial();
+                        showDialogTipoMaterial(tipoMenu);
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -225,7 +239,7 @@ public class MenuActivity extends AppCompatActivity
                 .show();
     }
 
-    private void showDialogTipoMaterial() {
+    private void showDialogTipoMaterial(final String tipoMenu) {
         List<String> tipos = new ArrayList<>();
         if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
             tipos.add("Material");
@@ -243,6 +257,8 @@ public class MenuActivity extends AppCompatActivity
                         Intent encabezado = new Intent(MenuActivity.this, EncabezadoSolictudActivity.class);
                         encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
                         encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
+                        encabezado.putExtra("tipoMenu", tipoMenu);
+                        TIPO_MENU = tipoMenu;
                         startActivity(encabezado);
                         return false;
                     }

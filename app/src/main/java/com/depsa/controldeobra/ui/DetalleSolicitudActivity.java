@@ -66,7 +66,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                 new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL)
         );
         Intent entregaMateriales = getIntent();
-        getDetalleSolicitud(entregaMateriales.getIntExtra("solicitud", 0),
+        getDetalleSolicitud(MenuActivity.NUMERO_SOLICITUD,
                 entregaMateriales.getIntExtra("tipoMaterial", 0));
 
         Constants.showDialog(this, "Cargando datos...");
@@ -79,7 +79,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     }
 
     private void getDetalleSolicitud(Integer... parameters) {
-        Call<List<DetalleSolicitudResponse>> getDetalleSolicitud = mControlObraWebAPI.getDetalleSolicitud(parameters[0], parameters[1]);
+        Call<List<DetalleSolicitudResponse>> getDetalleSolicitud = mControlObraWebAPI.getDetalleSolicitud(parameters[0], parameters[1], MenuActivity.TIPO_MENU);
         getDetalleSolicitud.enqueue(new Callback<List<DetalleSolicitudResponse>>() {
             @Override
             public void onResponse(Call<List<DetalleSolicitudResponse>> call, Response<List<DetalleSolicitudResponse>> response) {
@@ -172,7 +172,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
-                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE")) { ///BODEGUERO  SUPERVISOR
+                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE") || MenuActivity.TIPO_MATERIAL == 2) { ///BODEGUERO  SUPERVISOR
                             for (DetalleSolicitudResponse response : mListaResponse) {
                                 if (!response.calcularSaldo()) {
                                     Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
@@ -189,23 +189,23 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                                     (int) entregaMateriales.getDoubleExtra("codBodega", 0d),
                                     Integer.parseInt(response.getCodigo()),
                                     response.getCodUnidad(),
-                                    entregaMateriales.getIntExtra("solicitud", 0),
+                                    MenuActivity.NUMERO_SOLICITUD,
                                     response.getBodega(),
                                     response.getSolicitado(),
                                     response.getSaldo(),
                                     Double.parseDouble(String.valueOf(response.getDespacho())),
-                                    "android"
+                                    mPrefManager.getUserName(),
+                                    MenuActivity.TIPO_MENU
                             );
                             sendReqToServer(detailBody);
                             count++;
                         }
-                        Log.e("puta ", "count "  + count + " size " + mListaResponse.size());
                         if (count == mListaResponse.size()) {
                             if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
                                 // MATERIALES
                                 generarSalida();
                             } else if (getIntent().getStringExtra("idMenu").equals("devolucion")) {
-                                // TODO: DFA
+                                generaDevolucion();
                             } else {
                                 // mano de obra
                                 generarSalidaManoObra();
@@ -223,7 +223,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     }
 
     private void generarSalida() {
-        Call<Void> generaSalida = mControlObraWebAPI.generarSalirda(getIntent().getIntExtra("solicitud", 0));
+        Call<Void> generaSalida = mControlObraWebAPI.generarSalirda(MenuActivity.NUMERO_SOLICITUD);
         generaSalida.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -265,7 +265,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     }
 
     private void generarSalidaManoObra() {
-        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaManoObra(getIntent().getIntExtra("solicitud", 0));
+        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaManoObra(MenuActivity.NUMERO_SOLICITUD);
         genearSalidaManoObra.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -308,7 +308,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
     }
 
     private void generaDevolucion() {
-        Call<Void> generaSalida = mControlObraWebAPI.generaDevolucion(getIntent().getIntExtra("solicitud", 0));
+        Call<Void> generaSalida = mControlObraWebAPI.generaDevolucion(MenuActivity.NUMERO_SOLICITUD);
         generaSalida.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -355,7 +355,9 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
             isSelectedAll = false;
             for (DetalleSolicitudResponse d : mListaResponse) {
                 //String n = String.format(Locale.getDefault(), "%.2f", d.getSolicitado());
-                d.setDespacho(Math.floor(d.getSaldo()));
+                d.setDespacho(d.getSaldo());
+
+                Log.e("qlo ", " qlo " + d.getSaldo() + " qlo2 " +  d.getDespacho());
             }
         } else {
             isSelectedAll = true;

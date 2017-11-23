@@ -38,10 +38,14 @@ public class DetalleSolicitudBody {
     @SerializedName("Usuario")
     @Expose
     private String usuario;
+    @Expose
+    @SerializedName("TipoTransaccion")
+    private String tipoTransaccion;
 
     public DetalleSolicitudBody(Integer codProyecto, Integer codBodega, Integer codDetalle,
                                 Integer codUnidad, Integer solicitud, Double bodega,
-                                Double solicitado, Double saldo, Double despacho, String usuario) {
+                                Double solicitado, Double saldo, Double despacho, String usuario,
+                                String tipoTransaccion) {
         this.codProyecto = codProyecto;
         this.codBodega = codBodega;
         this.codDetalle = codDetalle;
@@ -52,6 +56,7 @@ public class DetalleSolicitudBody {
         this.saldo = saldo;
         this.despacho = despacho;
         this.usuario = usuario;
+        this.tipoTransaccion = tipoTransaccion;
     }
 
     public Integer getCodProyecto() {
@@ -132,5 +137,13 @@ public class DetalleSolicitudBody {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getTipoTransaccion() {
+        return tipoTransaccion;
+    }
+
+    public void setTipoTransaccion(String tipoTransaccion) {
+        this.tipoTransaccion = tipoTransaccion;
     }
 }

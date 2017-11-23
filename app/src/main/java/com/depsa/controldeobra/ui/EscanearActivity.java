@@ -42,7 +42,8 @@ public class EscanearActivity extends Activity
         // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview(this);
         Constants.showDialog(this, loadingText);
-        showDialogTipoMaterial(Integer.parseInt(result.getContents()));
+        NUMERO_SOLICITUD = Integer.parseInt(result.getContents().replaceFirst("^0*", ""));
+        showDialogTipoMaterial(NUMERO_SOLICITUD);
         Constants.dismissDialog();
     }
 
@@ -74,6 +75,7 @@ public class EscanearActivity extends Activity
                         Intent encabezado = new Intent(EscanearActivity.this, EncabezadoSolictudActivity.class);
                         encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
                         encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
+                        MenuActivity.NUMERO_SOLICITUD = NUMERO_SOLICITUD;
                         startActivity(encabezado);
                         return false;
                     }

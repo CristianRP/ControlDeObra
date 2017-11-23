@@ -114,7 +114,7 @@ public class SolicitudDetalleResponseAdapter
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
-                    item.setDespacho(Integer.parseInt(s.toString()));
+                    item.setDespacho(Double.parseDouble(s.toString()));
                     if (!item.calcularSaldo()) {
                         Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
                     }

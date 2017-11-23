@@ -58,8 +58,8 @@ public class EncabezadoSolictudActivity extends AppCompatActivity {
         mControlObraWebAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
 
         Intent solicitud = getIntent();
-        obtenerEncabezadoSolicitud(solicitud.getIntExtra("solicitud", 0));
-        mNumeroSolicitud.setText(""+solicitud.getIntExtra("solicitud", 0));
+        obtenerEncabezadoSolicitud(MenuActivity.NUMERO_SOLICITUD);
+        mNumeroSolicitud.setText(""+MenuActivity.NUMERO_SOLICITUD);
 
     }
 
