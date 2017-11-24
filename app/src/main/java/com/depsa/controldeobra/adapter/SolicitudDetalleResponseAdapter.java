@@ -95,10 +95,20 @@ public class SolicitudDetalleResponseAdapter
         return new ViewHolder(v, this);
     }
 
+    DetalleSolicitudResponse item2 = null;
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final DetalleSolicitudResponse item = mListaDetalleSolicitudResponse.get(position);
-        holder.mDescripcion.setText(item.getNombre());
+
+        try {
+            if (item.getNombre().equals("")) {
+                holder.mDescripcion.setText("");
+            } else {
+                holder.mDescripcion.setText(item.getNombre());
+            }
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
         holder.mBodega.setText(String.valueOf(item.getBodega()));
         holder.mDespacho.setTag(position);
         holder.mDespacho.setText(String.valueOf(item.getDespacho()), TextView.BufferType.EDITABLE);
@@ -125,6 +135,22 @@ public class SolicitudDetalleResponseAdapter
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+        holder.mDespacho.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    for (int i = 0; i < mListaDetalleSolicitudResponse.size(); i++) {
+                        if (mListaDetalleSolicitudResponse.get(i).getCodigo().equals(holder.mCod.getText().toString())) {
+                            item2 = mListaDetalleSolicitudResponse.get(i);
+                        }
+                    }
+                    //item.setDespacho(Double.parseDouble(holder.mDespacho.getText().toString().trim()));
+                    final int position = (Integer) view.getTag();
+                    final EditText etDespacho = (EditText) view;
+                    item2.setDespacho(Double.parseDouble(etDespacho.getText().toString()));
+                }
             }
         });
     }
