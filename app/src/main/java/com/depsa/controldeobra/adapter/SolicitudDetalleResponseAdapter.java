@@ -95,11 +95,10 @@ public class SolicitudDetalleResponseAdapter
         return new ViewHolder(v, this);
     }
 
-    DetalleSolicitudResponse item2 = null;
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final DetalleSolicitudResponse item = mListaDetalleSolicitudResponse.get(position);
-
+        holder.setIsRecyclable(false);
         try {
             if (item.getNombre().equals("")) {
                 holder.mDescripcion.setText("");
@@ -137,11 +136,11 @@ public class SolicitudDetalleResponseAdapter
             public void afterTextChanged(Editable s) {
             }
         });
-        holder.mDespacho.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*holder.mDespacho.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (!b) {
-                    for (int i = 0; i < mListaDetalleSolicitudResponse.size(); i++) {
+                    /*for (int i = 0; i < mListaDetalleSolicitudResponse.size(); i++) {
                         if (mListaDetalleSolicitudResponse.get(i).getCodigo().equals(holder.mCod.getText().toString())) {
                             item2 = mListaDetalleSolicitudResponse.get(i);
                         }
@@ -149,14 +148,28 @@ public class SolicitudDetalleResponseAdapter
                     //item.setDespacho(Double.parseDouble(holder.mDespacho.getText().toString().trim()));
                     final int position = (Integer) view.getTag();
                     final EditText etDespacho = (EditText) view;
-                    item2.setDespacho(Double.parseDouble(etDespacho.getText().toString()));
+                    //item2.setDespacho(mListaDetalleSolicitudResponse.get(position).getDespacho());7
+                    mListaDetalleSolicitudResponse.get(position).setDespacho(Double.parseDouble(etDespacho.getText().toString()));
+                    Log.e("afs", String.valueOf(mListaDetalleSolicitudResponse.get(position).getDespacho()));
+                    notifyItemChanged(position);
                 }
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
         return mListaDetalleSolicitudResponse.size();
+    }
+
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 }

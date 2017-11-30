@@ -74,7 +74,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
 
     private void setDataToRecycler(List<DetalleSolicitudResponse> items) {
         mAdapter = new SolicitudDetalleResponseAdapter(items, this);
-        mAdapter.setHasStableIds(false);
+        mAdapter.setHasStableIds(true);
         mRecyclerMateriales.setAdapter(mAdapter);
     }
 

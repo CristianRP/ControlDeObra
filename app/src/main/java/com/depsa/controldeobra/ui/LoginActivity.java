@@ -23,6 +23,7 @@ import com.depsa.controldeobra.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     };
     int PERMISSION_ALL = 1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mControlAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
     }
-
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     @OnClick(R.id.btnEntrar)
     void OnEntrarClick() {
         if (!mUserName.getText().toString().isEmpty() &&
