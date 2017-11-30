@@ -23,15 +23,22 @@ import com.depsa.controldeobra.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.trialy.library.Trialy;
+import io.trialy.library.TrialyCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static io.trialy.library.Constants.STATUS_TRIAL_JUST_ENDED;
+import static io.trialy.library.Constants.STATUS_TRIAL_JUST_STARTED;
+import static io.trialy.library.Constants.STATUS_TRIAL_NOT_YET_STARTED;
+import static io.trialy.library.Constants.STATUS_TRIAL_OVER;
+import static io.trialy.library.Constants.STATUS_TRIAL_RUNNING;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -68,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
         }
 
+        Trialy mTrialy = new Trialy(this, "5IGU96V17SY1FA25AUL");
+        mTrialy.checkTrial("default", mTrialyCallback);
+
         /*if (mPrefManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, MenuActivity.class));
             finish();
@@ -75,7 +85,32 @@ public class LoginActivity extends AppCompatActivity {
 
         mControlAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
     }
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    private TrialyCallback mTrialyCallback = new TrialyCallback() {
+        @Override
+        public void onResult(int status, long timeRemaining, String sku) {
+            switch (status){
+                case STATUS_TRIAL_JUST_STARTED:
+                    //The trial has just started - enable the premium features for the user
+                    break;
+                case STATUS_TRIAL_RUNNING:
+                    //The trial is currently running - enable the premium features for the user
+                    break;
+                case STATUS_TRIAL_JUST_ENDED:
+                    //The trial has just ended - block access to the premium features
+                    break;
+                case STATUS_TRIAL_NOT_YET_STARTED:
+                    //The user hasn't requested a trial yet - no need to do anything
+                    break;
+                case STATUS_TRIAL_OVER:
+                    finish();
+                    break;
+            }
+            Log.i("TRIALY", "Returned status: " + Trialy.getStatusMessage(status));
+        }
+
+    };
+
     @OnClick(R.id.btnEntrar)
     void OnEntrarClick() {
         if (!mUserName.getText().toString().isEmpty() &&
