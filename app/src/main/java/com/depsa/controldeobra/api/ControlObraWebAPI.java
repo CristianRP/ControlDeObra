@@ -75,6 +75,10 @@ public interface ControlObraWebAPI {
     @POST("api/GeneraSalidaManoObra")
     Call<Void> generarSalidaManoObra(@Query("prSolicitud") int solicitud);
 
+    @POST("api/GeneraSalidaMO")
+    Call<Void> generarSalidaMO(@Query("pSolicitud") int solicitud, @Query("pCuadrilla") int cuadrilla,
+                               @Query("pEstado") String estado);
+
     @POST("api/login")
     Call<List<LoginResponse>> autenticarUsuario(@Query("username") String username, @Query("password") String password);
 

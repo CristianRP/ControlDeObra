@@ -3,15 +3,18 @@ package com.depsa.controldeobra.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.adapter.SolicitudDetalleResponseAdapter;
 import com.depsa.controldeobra.api.ControlObraWebAPI;
@@ -264,8 +267,38 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
         });
     }
 
+    public static int cuadrilla;
+    public static String ESTADO;
     private void generarSalidaManoObra() {
-        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaManoObra(MenuActivity.NUMERO_SOLICITUD);
+        new MaterialDialog.Builder(this)
+                .title("Ingresar cuadrilla")
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .input("No. de cuadrilla", null, false,
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                cuadrilla = Integer.parseInt(input.toString());
+
+                                Log.e("numoero solicitud", " " + cuadrilla );
+                            }
+                        }
+                )
+                .show();
+        new MaterialDialog.Builder(this)
+                .title("Ingresar cuadrilla")
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .input("No. de cuadrilla", null, false,
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                ESTADO = input.toString();
+
+                                Log.e("numoero solicitud", " " + ESTADO );
+                            }
+                        }
+                )
+                .show();
+        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaMO(MenuActivity.NUMERO_SOLICITUD, cuadrilla, ESTADO);
         genearSalidaManoObra.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -351,6 +384,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSeleccionarTodos)
     void OnClickSeleccionarTodos() {
+
         if (isSelectedAll) {
             isSelectedAll = false;
             for (DetalleSolicitudResponse d : mListaResponse) {
