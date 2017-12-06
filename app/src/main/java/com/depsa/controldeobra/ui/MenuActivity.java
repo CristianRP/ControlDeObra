@@ -35,6 +35,7 @@ public class MenuActivity extends AppCompatActivity
     public static int TIPO_MATERIAL;
     public static int NUMERO_SOLICITUD;
     public static String TIPO_MENU;
+    public static String ID_MENU = "P2";
 
     public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
@@ -148,6 +149,7 @@ public class MenuActivity extends AppCompatActivity
                             TIPO_MATERIAL = 1;
                             Intent encabezado = new Intent(MenuActivity.this, EncabezadoSolictudActivity.class);
                             encabezado.putExtra("idMenu", "devolucion");
+                            ID_MENU = "devolucion";
                             encabezado.putExtra("solicitud", NUMERO_SOLICITUD);
                             encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
                             encabezado.putExtra("tipoMenu", DEVOLUCION_MATERIAL_TXT);

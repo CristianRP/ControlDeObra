@@ -14,6 +14,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.adapter.SolicitudDetalleResponseAdapter;
@@ -207,7 +208,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                             if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
                                 // MATERIALES
                                 generarSalida();
-                            } else if (getIntent().getStringExtra("idMenu").equals("devolucion")) {
+                            } else if (MenuActivity.ID_MENU.equals("devolucion")) {
                                 generaDevolucion();
                             } else {
                                 // mano de obra
@@ -283,61 +284,71 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                             }
                         }
                 )
-                .show();
-        new MaterialDialog.Builder(this)
-                .title("Ingresar cuadrilla")
-                .inputType(InputType.TYPE_CLASS_NUMBER)
-                .input("No. de cuadrilla", null, false,
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                ESTADO = input.toString();
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        new MaterialDialog.Builder(DetalleSolicitudActivity.this)
+                                .title("Ingresar estado")
+                                .inputType(InputType.TYPE_CLASS_TEXT)
+                                .input("S/N", null, false,
+                                        new MaterialDialog.InputCallback() {
+                                            @Override
+                                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                                ESTADO = input.toString();
 
-                                Log.e("numoero solicitud", " " + ESTADO );
-                            }
-                        }
-                )
-                .show();
-        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaMO(MenuActivity.NUMERO_SOLICITUD, cuadrilla, ESTADO);
-        genearSalidaManoObra.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Constants.dismissDialog();
-                String error = "Ha ocurrido un error. Contacte con el administrador";
-                if (!response.isSuccessful()) {
-                    if (response.raw().code() != 200) {
-                        //Toast.makeText(DetalleSolicitudActivity.this, error, Toast.LENGTH_SHORT).show();
-                        Log.e("ERROR ENVIANDO ", error + " " + response.errorBody().toString());
-                        return;
+                                                Log.e("numoero solicitud", " " + ESTADO );
+                                            }
+                                        }
+                                )
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Call<Void> genearSalidaManoObra = mControlObraWebAPI.generarSalidaMO(MenuActivity.NUMERO_SOLICITUD, cuadrilla, ESTADO);
+                                        genearSalidaManoObra.enqueue(new Callback<Void>() {
+                                            @Override
+                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                Constants.dismissDialog();
+                                                String error = "Ha ocurrido un error. Contacte con el administrador";
+                                                if (!response.isSuccessful()) {
+                                                    if (response.raw().code() != 200) {
+                                                        //Toast.makeText(DetalleSolicitudActivity.this, error, Toast.LENGTH_SHORT).show();
+                                                        Log.e("ERROR ENVIANDO ", error + " " + response.errorBody().toString());
+                                                        return;
+                                                    }
+                                                    if (response.errorBody()
+                                                            .contentType()
+                                                            .subtype()
+                                                            .equals("json")) {
+                                                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Error " + response.errorBody().toString());
+                                                    } else {
+                                                        try {
+                                                            // Errores no relacionados con el API
+                                                            Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), response.errorBody().string());
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }
+
+                                                Toast.makeText(DetalleSolicitudActivity.this, "Salida generada con éxito", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(DetalleSolicitudActivity.this, MenuActivity.class));
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Void> call, Throwable t) {
+                                                Constants.dismissDialog();
+                                                t.printStackTrace();
+                                                Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
+                                                Toast.makeText(DetalleSolicitudActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                })
+                                .show();
                     }
-                    if (response.errorBody()
-                            .contentType()
-                            .subtype()
-                            .equals("json")) {
-                        Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Error " + response.errorBody().toString());
-                    } else {
-                        try {
-                            // Errores no relacionados con el API
-                            Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                Toast.makeText(DetalleSolicitudActivity.this, "Salida generada con éxito", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DetalleSolicitudActivity.this, MenuActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Constants.dismissDialog();
-                t.printStackTrace();
-                Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), "Ha ocurrido un error. Contacte con el administrador");
-                Toast.makeText(DetalleSolicitudActivity.this, "Ha ocurrido un error. Contacte con el administrador" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                })
+                .show();
     }
 
     private void generaDevolucion() {
