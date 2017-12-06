@@ -4,6 +4,7 @@ import com.depsa.controldeobra.bean.BodyResponse;
 import com.depsa.controldeobra.bean.DetalleSolicitudBody;
 import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
 import com.depsa.controldeobra.bean.LoginResponse;
+import com.depsa.controldeobra.bean.ManoObra;
 import com.depsa.controldeobra.bean.Requisicion;
 import com.depsa.controldeobra.bean.SolicitudEncabezadoResponse;
 
@@ -76,8 +77,7 @@ public interface ControlObraWebAPI {
     Call<Void> generarSalidaManoObra(@Query("prSolicitud") int solicitud);
 
     @POST("api/GeneraSalidaMO")
-    Call<Void> generarSalidaMO(@Query("pSolicitud") int solicitud, @Query("pCuadrilla") int cuadrilla,
-                               @Query("pEstado") String estado);
+    Call<Void> generarSalidaMO(@Body ManoObra mo);
 
     @POST("api/login")
     Call<List<LoginResponse>> autenticarUsuario(@Query("username") String username, @Query("password") String password);
