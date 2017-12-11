@@ -40,13 +40,15 @@ public class MenuActivity extends AppCompatActivity
     public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
-                add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
+                //// TODO: DELETE
                 add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
                 add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
+                ///
             }};
     public static ArrayList<MenuItem> ITEMS_BODEGUERO =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
+                add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
             }};
     public static ArrayList<MenuItem> ITEMS_RESIDENTE =
             new ArrayList<MenuItem>() {{
@@ -245,6 +247,11 @@ public class MenuActivity extends AppCompatActivity
         List<String> tipos = new ArrayList<>();
         if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
             tipos.add("Material");
+        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(ENTREGA_MATERIALES_TXT)) {
+            tipos.add("Mano de obra");
+        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(SOBREGIROS)) {
+            tipos.add("Material");
+            tipos.add("Mano de obra");
         } else {
             tipos.add("Material");
             tipos.add("Mano de obra");

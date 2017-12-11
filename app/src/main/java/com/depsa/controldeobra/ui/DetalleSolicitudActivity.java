@@ -179,10 +179,26 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
-                        if (!mPrefManager.getUserPerfil().equals("RESIDENTE") || MenuActivity.TIPO_MATERIAL == 2) { ///BODEGUERO  SUPERVISOR
+                        if (!MenuActivity.TIPO_MENU.equals(MenuActivity.SOBREGIROS)) {
                             for (DetalleSolicitudResponse response : mListaResponse) {
                                 if (!response.calcularSaldo()) {
                                     Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
+                            }
+                        } else if (MenuActivity.TIPO_MENU.equals(MenuActivity.ENTREGA_MATERIALES_TXT)) {
+                            for (DetalleSolicitudResponse response : mListaResponse) {
+                                if (!(response.getSolicitado() > response.getDespacho())) {
+                                    Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa la cantidad solicitada!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
+                            }
+                        } else if (MenuActivity.TIPO_MENU.equals(MenuActivity.DEVOLUCION_MATERIAL_TXT)) {
+                            for (DetalleSolicitudResponse response : mListaResponse) {
+                                if (!(response.getSolicitado() > response.getDespacho())) {
+                                    Toast.makeText(DetalleSolicitudActivity.this, "La devolución sobrepasa la cantidad solicitada!", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                     return;
                                 }
