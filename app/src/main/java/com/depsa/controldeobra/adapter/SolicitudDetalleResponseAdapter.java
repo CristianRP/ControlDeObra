@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
 import com.depsa.controldeobra.bean.DetalleSolicitudResponse;
+import com.depsa.controldeobra.ui.MenuActivity;
 
 import java.util.List;
 
@@ -125,7 +126,9 @@ public class SolicitudDetalleResponseAdapter
                 try {
                     item.setDespacho(Double.parseDouble(s.toString()));
                     if (!item.calcularSaldo()) {
-                        Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                        if (!(MenuActivity.TIPO_MATERIAL == 2)) {
+                            Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();

@@ -3,6 +3,7 @@ package com.depsa.controldeobra.ui;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.depsa.controldeobra.R;
@@ -50,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText mClave;
     @BindView(R.id.btnEntrar)
     Button mBtnEntrar;
+    @BindView(R.id.tvVersion)
+    TextView mVersion;
     private ControlObraWebAPI mControlAPI;
     private PrefManager mPrefManager;
 
@@ -84,6 +88,16 @@ public class LoginActivity extends AppCompatActivity {
         }*/
 
         mControlAPI = ServiceGenerator.createService(ControlObraWebAPI.class);
+        PackageManager manager = this.getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(
+                    this.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String version = info != null ? info.versionName : null;
+        mVersion.setText(version);
     }
 
     private TrialyCallback mTrialyCallback = new TrialyCallback() {

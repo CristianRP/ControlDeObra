@@ -179,7 +179,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(EntregaMaterialesTableActivity.class.getSimpleName(), " " + mListaResponse.get(0).getDespacho());
                         Intent entregaMateriales = getIntent();
-                        if (!MenuActivity.TIPO_MENU.equals(MenuActivity.SOBREGIROS)) {
+                        if (MenuActivity.TIPO_MENU.equals(MenuActivity.SOBREGIROS)) {
                             for (DetalleSolicitudResponse response : mListaResponse) {
                                 if (!response.calcularSaldo()) {
                                     Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
@@ -187,17 +187,23 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                                     return;
                                 }
                             }
-                        } else if (MenuActivity.TIPO_MENU.equals(MenuActivity.ENTREGA_MATERIALES_TXT)) {
-                            for (DetalleSolicitudResponse response : mListaResponse) {
-                                if (!(response.getSolicitado() > response.getDespacho())) {
-                                    Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa la cantidad solicitada!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    return;
+                        }
+                        if (MenuActivity.TIPO_MENU.equals(MenuActivity.ENTREGA_MATERIALES_TXT)) {
+                            Log.e("TIPO_MATERIAL", "ID: " + MenuActivity.TIPO_MATERIAL + " " + MenuActivity.TIPO_MENU);
+                            //if (!(MenuActivity.TIPO_MATERIAL == 2)) {
+                                for (DetalleSolicitudResponse response : mListaResponse) {
+                                    if (!(response.getSolicitado() >= response.getDespacho())) {
+                                        Log.e("PASA POR ACA", "GG");
+                                        Toast.makeText(DetalleSolicitudActivity.this, "El despacho sobrepasa la cantidad solicitada!", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        return;
+                                    }
                                 }
-                            }
-                        } else if (MenuActivity.TIPO_MENU.equals(MenuActivity.DEVOLUCION_MATERIAL_TXT)) {
+                            //}
+                        }
+                        if (MenuActivity.TIPO_MENU.equals(MenuActivity.DEVOLUCION_MATERIAL_TXT)) {
                             for (DetalleSolicitudResponse response : mListaResponse) {
-                                if (!(response.getSolicitado() > response.getDespacho())) {
+                                if (!(response.getDespacho() != response.getSolicitado())) {
                                     Toast.makeText(DetalleSolicitudActivity.this, "La devolución sobrepasa la cantidad solicitada!", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                     return;

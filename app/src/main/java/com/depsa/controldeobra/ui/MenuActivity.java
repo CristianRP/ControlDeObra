@@ -40,10 +40,6 @@ public class MenuActivity extends AppCompatActivity
     public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
-                //// TODO: DELETE
-                add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
-                add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
-                ///
             }};
     public static ArrayList<MenuItem> ITEMS_BODEGUERO =
             new ArrayList<MenuItem>() {{
@@ -247,9 +243,11 @@ public class MenuActivity extends AppCompatActivity
         List<String> tipos = new ArrayList<>();
         if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
             tipos.add("Material");
-        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(ENTREGA_MATERIALES_TXT)) {
+        }
+        if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(ENTREGA_MATERIALES_TXT)) {
             tipos.add("Mano de obra");
-        } else if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(SOBREGIROS)) {
+        }
+        if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(SOBREGIROS)) {
             tipos.add("Material");
             tipos.add("Mano de obra");
         } else {
@@ -268,6 +266,7 @@ public class MenuActivity extends AppCompatActivity
                         encabezado.putExtra("tipoMaterial", TIPO_MATERIAL);
                         encabezado.putExtra("tipoMenu", tipoMenu);
                         TIPO_MENU = tipoMenu;
+                        Log.e("TIPO_MATERIAL", " ID :  " + TIPO_MATERIAL + text.toString());
                         startActivity(encabezado);
                         return false;
                     }
