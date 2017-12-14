@@ -171,9 +171,15 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnEntregaMateriales)
     void OnClickEntregaMateriales() {
+        String message = "Desea enviar los datos?";
+        String title = "Enviar datos";
+        if (!(MenuActivity.TIPO_MATERIAL == 2)) {
+            message = "Desea enviar los materiales?";
+            title = "Enviar materiales";
+        }
         new AlertDialog.Builder(this)
-                .setTitle("Enviar materiales")
-                .setMessage("Desea enviar los materiales?")
+                .setTitle(title)
+                .setMessage(message)
                 .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -316,7 +322,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                         op.add("S");
                         op.add("N");
                         MaterialDialog m = new  MaterialDialog.Builder(DetalleSolicitudActivity.this)
-                                .title("Entrega materiales")
+                                .title("Ingresa trabajo nuevo?")
                                 .items(op)
                                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override

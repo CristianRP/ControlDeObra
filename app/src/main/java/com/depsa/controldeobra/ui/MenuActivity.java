@@ -40,6 +40,8 @@ public class MenuActivity extends AppCompatActivity
     public static ArrayList<MenuItem> ITEMS_SUPERVISOR =
             new ArrayList<MenuItem>() {{
                 add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
+                add(new MenuItem(DEVOLUCION_MATERIAL_TXT, R.drawable.devolucion_material));
+                add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
             }};
     public static ArrayList<MenuItem> ITEMS_BODEGUERO =
             new ArrayList<MenuItem>() {{
