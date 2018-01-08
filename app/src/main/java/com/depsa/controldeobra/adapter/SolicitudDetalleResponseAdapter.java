@@ -125,11 +125,14 @@ public class SolicitudDetalleResponseAdapter
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     item.setDespacho(Double.parseDouble(s.toString()));
-                    if (!item.calcularSaldo()) {
-                        if (!(MenuActivity.TIPO_MATERIAL == 2)) {
-                            Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                    if (!(MenuActivity.TIPO_MENU.equals(MenuActivity.DEVOLUCION_MATERIAL_TXT))) {
+                        if (!item.calcularSaldo()) {
+                            if (!(MenuActivity.TIPO_MATERIAL == 2)) {
+                                Toast.makeText(mContext, "El despacho sobrepasa el valor de la existencia en bodega revisa los datos!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
+
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
                 }

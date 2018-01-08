@@ -239,7 +239,8 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                             if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
                                 // MATERIALES
                                 generarSalida();
-                            } else if (MenuActivity.ID_MENU.equals("devolucion")) {
+                            }
+                            if (MenuActivity.ID_MENU.equals("devolucion")) {
                                 generaDevolucion();
                             } else {
                                 // mano de obra
