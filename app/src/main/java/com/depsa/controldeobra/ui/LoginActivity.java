@@ -30,17 +30,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.trialy.library.Trialy;
-import io.trialy.library.TrialyCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static io.trialy.library.Constants.STATUS_TRIAL_JUST_ENDED;
-import static io.trialy.library.Constants.STATUS_TRIAL_JUST_STARTED;
-import static io.trialy.library.Constants.STATUS_TRIAL_NOT_YET_STARTED;
-import static io.trialy.library.Constants.STATUS_TRIAL_OVER;
-import static io.trialy.library.Constants.STATUS_TRIAL_RUNNING;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -79,9 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
         }
 
-        Trialy mTrialy = new Trialy(this, "5IGU96V17SY1FA25AUL");
-        mTrialy.checkTrial("default", mTrialyCallback);
-
         /*if (mPrefManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, MenuActivity.class));
             finish();
@@ -99,31 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         String version = info != null ? info.versionName : null;
         mVersion.setText(version);
     }
-
-    private TrialyCallback mTrialyCallback = new TrialyCallback() {
-        @Override
-        public void onResult(int status, long timeRemaining, String sku) {
-            switch (status){
-                case STATUS_TRIAL_JUST_STARTED:
-                    //The trial has just started - enable the premium features for the user
-                    break;
-                case STATUS_TRIAL_RUNNING:
-                    //The trial is currently running - enable the premium features for the user
-                    break;
-                case STATUS_TRIAL_JUST_ENDED:
-                    //The trial has just ended - block access to the premium features
-                    break;
-                case STATUS_TRIAL_NOT_YET_STARTED:
-                    //The user hasn't requested a trial yet - no need to do anything
-                    break;
-                case STATUS_TRIAL_OVER:
-                    finish();
-                    break;
-            }
-            Log.i("TRIALY", "Returned status: " + Trialy.getStatusMessage(status));
-        }
-
-    };
 
     @OnClick(R.id.btnEntrar)
     void OnEntrarClick() {
@@ -177,12 +141,20 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 //Toast.makeText(LoginActivity.this, "Salida generada con éxito", Toast.LENGTH_SHORT).show();
-                if (!response.body().get(0).getUsuario().isEmpty()) {
-                    mPrefManager.createLoginSession(response.body().get(0));
-                    startActivity(new Intent(LoginActivity.this, MenuActivity.class));
-                    finish();
-                } else {
+                try {
+                    if (!response.body().get(0).getUsuario().isEmpty()) {
+                        mPrefManager.createLoginSession(response.body().get(0));
+                        startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Error de crendeciales.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception ex) {
                     Toast.makeText(LoginActivity.this, "Error de crendeciales.", Toast.LENGTH_SHORT).show();
+                    ex.printStackTrace();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
                 }
             }
 

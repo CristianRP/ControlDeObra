@@ -50,6 +50,7 @@ public class MenuActivity extends AppCompatActivity
             }};
     public static ArrayList<MenuItem> ITEMS_RESIDENTE =
             new ArrayList<MenuItem>() {{
+                add(new MenuItem(ENTREGA_MATERIALES_TXT, R.drawable.entrega_materiales));
                 add(new MenuItem(AVANCE_DE_OBRA, R.drawable.avance_obra));
                 add(new MenuItem(SOBREGIROS, R.drawable.sobre_giros));
             }};
@@ -252,7 +253,9 @@ public class MenuActivity extends AppCompatActivity
         if (mPrefManager.getUserPerfil().equals("RESIDENTE") && tipoMenu.equals(SOBREGIROS)) {
             tipos.add("Material");
             tipos.add("Mano de obra");
-        } else {
+        }
+
+        if (mPrefManager.getUserPerfil().equals("SUPERVISOR")){
             tipos.add("Material");
             tipos.add("Mano de obra");
         }
