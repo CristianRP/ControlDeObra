@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.depsa.controldeobra.R;
+import com.depsa.controldeobra.preferences.PrefManager;
 import com.depsa.controldeobra.util.Constants;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class EscanearActivity extends Activity
     private ZBarScannerView mScannerView;
     public static int TIPO_MATERIAL;
     public static int NUMERO_SOLICITUD;
+    private PrefManager mPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class EscanearActivity extends Activity
         mScannerView = new ZBarScannerView(this);
         setContentView(mScannerView);
         mScannerView.startCamera();
+        mPrefManager = new PrefManager(this);
     }
 
     @Override
@@ -62,8 +65,21 @@ public class EscanearActivity extends Activity
 
     private void showDialogTipoMaterial(final int noSolicitud) {
         List<String> tipos = new ArrayList<>();
-        tipos.add("Material");
-        tipos.add("Mano de obra");
+        if (mPrefManager.getUserPerfil().equals("BODEGUERO")) {
+            tipos.add("Material");
+        }
+        if (mPrefManager.getUserPerfil().equals("RESIDENTE") && MenuActivity.TIPO_MENU.equals(MenuActivity.ENTREGA_MATERIALES_TXT)) {
+            tipos.add("Mano de obra");
+        }
+        if (mPrefManager.getUserPerfil().equals("RESIDENTE") &&  MenuActivity.TIPO_MENU.equals(MenuActivity.SOBREGIROS)) {
+            tipos.add("Material");
+            tipos.add("Mano de obra");
+        }
+
+        if (mPrefManager.getUserPerfil().equals("SUPERVISOR")){
+            tipos.add("Material");
+            tipos.add("Mano de obra");
+        }
         new MaterialDialog.Builder(this)
                 .title("Tipo de material")
                 .items(tipos)

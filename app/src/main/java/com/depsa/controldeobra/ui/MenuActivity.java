@@ -206,6 +206,7 @@ public class MenuActivity extends AppCompatActivity
             startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
             startActivity(entrega);*/
         } else if (menuItem.getDescripcion().equals(ENTREGA_MATERIALES_TXT)) {
+            TIPO_MENU = ENTREGA_MATERIALES_TXT;
             startActivity(new Intent(MenuActivity.this, EscanearActivity.class));
         } else if (menuItem.getDescripcion().equals(DEVOLUCION_MATERIAL_TXT)) {
 
