@@ -239,6 +239,7 @@ public class DetalleSolicitudActivity extends AppCompatActivity {
                             if (getIntent().getIntExtra("tipoMaterial", 0) == 1) {
                                 // MATERIALES
                                 generarSalida();
+                                return;
                             }
                             if (MenuActivity.ID_MENU.equals("devolucion")) {
                                 generaDevolucion();
